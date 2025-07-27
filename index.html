@@ -86,6 +86,7 @@
         }
         #song-title { font-size: 22px; font-weight: 700; margin: 0; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
         #song-artist { font-size: 16px; color: var(--secondary-text); margin: 5px 0 20px 0; }
+        
         .progress-container { width: 100%; margin-bottom: 10px; }
         #progress-bar {
             -webkit-appearance: none; width: 100%; height: 6px; background: rgba(255,255,255,0.2);
@@ -95,6 +96,16 @@
             -webkit-appearance: none; appearance: none; width: 18px; height: 18px;
             background: var(--theme-secondary); border-radius: 50%;
         }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            color: var(--secondary-text);
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
         .player-controls { display: flex; align-items: center; justify-content: center; width: 100%; }
         .player-controls .btn-control {
             background: none; border: none; color: #fff; font-size: 22px;
@@ -119,6 +130,10 @@
         .search-result-item img { width: 60px; height: 60px; border-radius: 8px; margin-right: 15px; }
         .search-result-info h4 { margin: 0 0 5px 0; font-size: 1em; }
         .search-result-info p { margin: 0; font-size: 0.9em; color: var(--secondary-text); }
+        /* Specific modal content for delete confirmation */
+        #delete-room-modal .modal-body { text-align: center; }
+        #delete-room-modal .modal-body p { margin-bottom: 20px; }
+        #delete-room-modal .modal-body .btn { margin-bottom: 10px; } /* Space between buttons */
     </style>
 </head>
 <body>
@@ -126,8 +141,32 @@
 
     <div id="name-screen" class="screen active"> <div class="container"> <h1>PeaceNotes</h1> <p>The Premium Listening Experience</p> <input type="text" id="name-input" class="styled-input" placeholder="Your Name" autocomplete="off"> <button id="continue-button" class="btn">Enter</button> </div> </div>
     <div id="home-screen" class="screen"> <div class="container"> <h1 id="welcome-message"></h1> <p>Create a room or enter a PIN to listen with friends.</p> <button id="create-room-button" class="btn">Create New Room</button> <p style="margin: 20px 0;">OR</p> <input type="text" id="pin-input" class="styled-input" placeholder="Enter Room PIN"> <button id="join-button" class="btn btn-secondary">Join Room</button> </div> </div>
-    <div id="chat-screen" class="screen"> <div class="chat-container"> <div class="chat-header"> <h3>Room PIN: <span id="room-pin-display"></span></h3> <button id="leave-room-button" class="btn btn-leave">Leave</button> </div> <div class="chat-body"> <div id="audio-player-ui"> <div class="player-content"> <img id="album-art" src="https://via.placeholder.com/150" alt="Album Art"> <h4 id="song-title">No music selected</h4> <p id="song-artist">Use the search button to find music</p> <div class="progress-container"> <input type="range" id="progress-bar" value="0" step="1"> </div> <div class="player-controls"> <button id="rewind-button" class="btn-control"><i class="fas fa-backward-step"></i></button> <button id="play-pause-button" class="btn-control btn-main"><i class="fas fa-play-circle"></i></button> <button id="forward-button" class="btn-control"><i class="fas fa-forward-step"></i></button> </div> </div> </div> <button id="music-search-button" class="btn" style="margin: 20px;">Search Music</button> <div class="messages-area" id="messages-area"></div> </div> <form class="message-input-form" id="message-form"> <input type="text" id="message-input" class="styled-input" placeholder="Type a message..." autocomplete="off"> <button type="submit" class="btn">Send</button> </form> </div> </div>
+    <div id="chat-screen" class="screen"> <div class="chat-container"> <div class="chat-header"> <h3>Room PIN: <span id="room-pin-display"></span></h3> <button id="leave-room-button" class="btn btn-leave">Leave</button> </div> <div class="chat-body"> <div id="audio-player-ui"> <div class="player-content"> <img id="album-art" src="https://via.placeholder.com/150" alt="Album Art"> <h4 id="song-title">No music selected</h4> <p id="song-artist">Use the search button to find music</p> <div class="progress-container"> 
+                            <input type="range" id="progress-bar" value="0" step="1"> 
+                            <div class="time-display">
+                                <span id="current-time">00:00</span>
+                                <span id="total-duration">00:00</span>
+                            </div>
+                        </div> 
+                        <div class="player-controls"> <button id="rewind-button" class="btn-control"><i class="fas fa-backward-step"></i></button> <button id="play-pause-button" class="btn-control btn-main"><i class="fas fa-play-circle"></i></button> <button id="forward-button" class="btn-control"><i class="fas fa-forward-step"></i></button> </div> </div> </div> <button id="music-search-button" class="btn" style="margin: 20px;">Search Music</button> <div class="messages-area" id="messages-area"></div> </div> <form class="message-input-form" id="message-form"> <input type="text" id="message-input" class="styled-input" placeholder="Type a message..." autocomplete="off"> <button type="submit" class="btn">Send</button> </form> </div> </div>
     <div id="search-modal" class="modal"> <div class="modal-content"> <div class="modal-header"> <h2>Search YouTube</h2> <span class="modal-close" id="modal-close-button">×</span> </div> <div class="modal-body"> <form id="modal-search-form" style="display: flex; margin-bottom: 15px;"> <input type="text" id="modal-search-input" class="styled-input" style="margin: 0;" placeholder="Enter song or artist..."> <button type="submit" class="btn" style="width: 100px; margin-left: 10px; margin-top: 0;">Search</button> </form> <ul id="search-results"></ul> </div> </div> </div>
+
+    <!-- NEW: Delete Room Confirmation Modal -->
+    <div id="delete-room-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirm Room Deletion</h2>
+                <span class="modal-close" id="delete-modal-close-button">×</span>
+            </div>
+            <div class="modal-body">
+                <p>You are the **last member** in this room.</p>
+                <p>If you leave, the room and **all its data (messages, music, members)** will be **permanently deleted** and cannot be recovered.</p>
+                <p>Are you sure you want to delete this room permanently?</p>
+                <button id="confirm-delete-button" class="btn" style="background: #e74c3c;">Yes, Delete Room Permanently</button>
+                <button id="cancel-delete-button" class="btn btn-secondary">No, Just Leave</button>
+            </div>
+        </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -146,17 +185,102 @@
 
         // --- State and Element Variables ---
         let currentRoomId, player, roomListeners = [], isSeeking = false, isPlayerReady = false, currentUserName;
-        let lastKnownState = {};
+        let lastKnownState = {}; // This will hold the last state received from Firebase
         const userId = 'user_' + Math.random().toString(36).substr(2, 9);
         const nameScreen = document.getElementById('name-screen'), nameInput = document.getElementById('name-input'), continueBtn = document.getElementById('continue-button'), welcomeMessage = document.getElementById('welcome-message'), homeScreen = document.getElementById('home-screen'), chatScreen = document.getElementById('chat-screen'), createRoomBtn = document.getElementById('create-room-button'), joinBtn = document.getElementById('join-button'), pinInput = document.getElementById('pin-input'), roomPinDisplay = document.getElementById('room-pin-display'), leaveRoomBtn = document.getElementById('leave-room-button'), messagesArea = document.getElementById('messages-area'), messageForm = document.getElementById('message-form'), messageInput = document.getElementById('message-input'), audioPlayerUI = document.getElementById('audio-player-ui'), albumArt = document.getElementById('album-art'), songTitle = document.getElementById('song-title'), songArtist = document.getElementById('song-artist'), playPauseBtn = document.getElementById('play-pause-button'), rewindBtn = document.getElementById('rewind-button'), forwardBtn = document.getElementById('forward-button'), progressBar = document.getElementById('progress-bar'), musicSearchBtn = document.getElementById('music-search-button'), searchModal = document.getElementById('search-modal'), modalCloseBtn = document.getElementById('modal-close-button'), modalSearchForm = document.getElementById('modal-search-form'), modalSearchInput = document.getElementById('modal-search-input'), searchResultsList = document.getElementById('search-results');
+        
+        const currentTimeDisplay = document.getElementById('current-time');
+        const totalDurationDisplay = document.getElementById('total-duration');
+
+        // NEW: Delete Room Modal Elements
+        const deleteRoomModal = document.getElementById('delete-room-modal');
+        const deleteModalCloseBtn = document.getElementById('delete-modal-close-button');
+        const confirmDeleteButton = document.getElementById('confirm-delete-button');
+        const cancelDeleteButton = document.getElementById('cancel-delete-button');
+
 
         // --- Core App Logic (Name, Rooms, Chat) ---
         continueBtn.addEventListener('click', () => { const name = nameInput.value.trim(); if (name) { currentUserName = name; welcomeMessage.textContent = `Welcome, ${currentUserName}!`; nameScreen.classList.remove('active'); homeScreen.classList.add('active'); } else { alert('Please enter your name.'); }});
         createRoomBtn.addEventListener('click', () => joinRoom(Math.floor(100000 + Math.random() * 900000).toString()));
         joinBtn.addEventListener('click', () => { const roomId = pinInput.value.trim(); if (roomId) joinRoom(roomId); else alert('Please enter a Room PIN.'); });
-        leaveRoomBtn.addEventListener('click', leaveRoom);
-        async function leaveRoom() { if (!currentRoomId) return; const roomRef = ref(db, `rooms/${currentRoomId}`); await remove(child(roomRef, `members/${userId}`)); const membersSnapshot = await get(child(roomRef, 'members')); if (!membersSnapshot.exists()) await remove(roomRef); roomListeners.forEach(off => off()); currentRoomId = null; if (player) player.stopVideo(); chatScreen.classList.remove('active'); homeScreen.classList.add('active'); }
-        function joinRoom(roomId) { currentRoomId = roomId; const membersRef = ref(db, `rooms/${currentRoomId}/members/${userId}`); set(membersRef, { name: currentUserName }); onDisconnect(membersRef).remove(); homeScreen.classList.remove('active'); chatScreen.classList.add('active'); roomPinDisplay.textContent = currentRoomId; messagesArea.innerHTML = ''; attachRoomListeners(); }
+        
+        // Modified leaveRoom logic
+        leaveRoomBtn.addEventListener('click', async () => {
+            if (!currentRoomId) return;
+            const membersSnapshot = await get(child(ref(db, `rooms/${currentRoomId}`), 'members'));
+            const memberCount = membersSnapshot.size;
+
+            if (memberCount === 1) { // If this user is the only one left
+                deleteRoomModal.style.display = 'flex'; // Show confirmation modal
+            } else { // If there are other members, just leave
+                performLeaveRoom(false); // false means don't delete the room
+            }
+        });
+
+        // NEW: Handles confirmed deletion or simple leave
+        async function performLeaveRoom(shouldDeleteRoom) {
+            if (!currentRoomId) return;
+            const roomRef = ref(db, `rooms/${currentRoomId}`);
+            
+            // First, remove the current user from the members list
+            await remove(child(roomRef, `members/${userId}`));
+
+            if (shouldDeleteRoom) {
+                // If confirmed, delete the entire room node
+                console.log(`User confirmed deletion. Permanently deleting room: ${currentRoomId}`);
+                await remove(roomRef);
+            } else {
+                // Check if the room became empty after this user left (in case of race condition)
+                const membersSnapshot = await get(child(roomRef, 'members'));
+                if (!membersSnapshot.exists() || membersSnapshot.size === 0) {
+                     console.log(`Room became empty after user left. Deleting room: ${currentRoomId}`);
+                     await remove(roomRef); // Still delete if it became truly empty
+                }
+            }
+            
+            // Clean up UI and state
+            roomListeners.forEach(off => off());
+            roomListeners = [];
+            currentRoomId = null;
+            if (player) player.stopVideo();
+            chatScreen.classList.remove('active');
+            homeScreen.classList.add('active');
+            messagesArea.innerHTML = ''; // Clear chat history
+            audioPlayerUI.style.display = 'none'; // Hide player UI
+            totalDurationDisplay.textContent = "00:00"; // Reset time display
+            currentTimeDisplay.textContent = "00:00";
+            progressBar.value = 0; // Reset progress bar
+            songTitle.textContent = "No music selected";
+            songArtist.textContent = "Use the search button to find music";
+
+            deleteRoomModal.style.display = 'none'; // Hide modal if open
+        }
+
+        // Event listeners for the new delete confirmation modal
+        deleteModalCloseBtn.addEventListener('click', () => {
+            deleteRoomModal.style.display = 'none';
+        });
+
+        confirmDeleteButton.addEventListener('click', () => {
+            performLeaveRoom(true); // User confirmed deletion
+        });
+
+        cancelDeleteButton.addEventListener('click', () => {
+            performLeaveRoom(false); // User chose not to delete, just leave
+        });
+
+
+        function joinRoom(roomId) {
+            currentRoomId = roomId;
+            const membersRef = ref(db, `rooms/${currentRoomId}/members/${userId}`);
+            set(membersRef, { name: currentUserName });
+            onDisconnect(membersRef).remove(); // Ensures user is removed on disconnect
+            homeScreen.classList.remove('active');
+            chatScreen.classList.add('active');
+            roomPinDisplay.textContent = currentRoomId;
+            messagesArea.innerHTML = '';
+            attachRoomListeners();
+        }
         messageForm.addEventListener('submit', e => { e.preventDefault(); const text = messageInput.value.trim(); if (text && currentRoomId) set(push(ref(db, `rooms/${currentRoomId}/messages`)), { text, senderId: userId, senderName: currentUserName, timestamp: serverTimestamp() }); messageInput.value = ''; });
         function displayMessage(msg, type) { const el = document.createElement('div'); el.classList.add('message', type); el.innerHTML = `<span class="sender-name">${type === 'sent' ? 'You' : msg.senderName}</span><div>${msg.text}</div>`; messagesArea.appendChild(el); messagesArea.scrollTop = messagesArea.scrollHeight; }
         function displaySystemMessage(text) { const el = document.createElement('div'); el.classList.add('message', 'system'); el.textContent = text; messagesArea.appendChild(el); messagesArea.scrollTop = messagesArea.scrollHeight; }
@@ -171,8 +295,22 @@
             const audioOff = onValue(audioStateRef, (snapshot) => {
                 if (!snapshot.exists()) { audioPlayerUI.style.display = 'none'; return; }
                 const state = snapshot.val();
-                lastKnownState = state;
-                syncLocalPlayerToState(state);
+                lastKnownState = state; // Always update our local copy of the master state
+
+                // This is the core sync logic based on who updated Firebase
+                if (isPlayerReady) { // Ensure player is ready before attempting to sync player state
+                    if (state.lastUpdatedBy === userId) {
+                        // This update came from *this* client. Only update UI (play/pause icon, progress bar).
+                        // Do NOT re-issue play/pause/seek commands to the player to prevent feedback loops.
+                        updatePlayerUI(state); // Update local UI based on confirmed master state
+                        // The player's current position and state (play/pause) are already correct due to local action
+                        // and are just being confirmed by Firebase.
+                    } else {
+                        // This update came from *another* client. Sync our player to their state.
+                        syncLocalPlayerToState(state);
+                        updatePlayerUI(state); // Update local UI
+                    }
+                }
             });
             
             const messagesOff = onChildAdded(messagesRef, (s) => displayMessage(s.val(), s.val().senderId === userId ? 'sent' : 'received'));
@@ -181,37 +319,124 @@
             roomListeners.push(audioOff, messagesOff, memberJoinOff, memberLeaveOff);
         }
 
-        window.onYouTubeIframeAPIReady = () => player = new YT.Player('youtube-player-hidden', { events: { 'onReady': () => isPlayerReady = true }});
+        window.onYouTubeIframeAPIReady = () => player = new YT.Player('youtube-player-hidden', { events: { 'onReady': onPlayerReady }});
 
-        function syncLocalPlayerToState(state) {
-            if (!isPlayerReady || !player) return;
+        function onPlayerReady() {
+            isPlayerReady = true;
+            // If we received a state from Firebase *before* the player was ready, sync it now.
+            if (Object.keys(lastKnownState).length > 0) { // Check if lastKnownState is not empty
+                syncLocalPlayerToState(lastKnownState);
+                updatePlayerUI(lastKnownState); // Also update UI on player ready
+            }
+        }
+
+        function updatePlayerUI(state) {
             audioPlayerUI.style.display = 'block';
             albumArt.src = state.thumbnail;
             songTitle.textContent = state.title;
             songArtist.textContent = state.artist;
+            
+            // Update play/pause button icon based on master state
+            playPauseBtn.innerHTML = state.isPlaying ? '<i class="fas fa-pause-circle"></i>' : '<i class="fas fa-play-circle"></i>';
+        }
 
+        function syncLocalPlayerToState(state) {
+            // Check if player exists and is ready
+            if (!isPlayerReady || !player) return;
+
+            // Load new video if different
             if (player.getVideoData()?.video_id !== state.videoId) {
                 player.loadVideoById({videoId: state.videoId, startSeconds: state.timestamp});
             } else {
-                if (Math.abs(player.getCurrentTime() - state.timestamp) > 2.5) player.seekTo(state.timestamp, true);
+                // Seek if time difference is significant
+                if (Math.abs(player.getCurrentTime() - state.timestamp) > 2.5) {
+                    player.seekTo(state.timestamp, true);
+                }
             }
 
-            if (state.isPlaying && player.getPlayerState() !== YT.PlayerState.PLAYING) player.playVideo();
-            else if (!state.isPlaying && player.getPlayerState() === YT.PlayerState.PLAYING) player.pauseVideo();
+            // Play or Pause based on state
+            if (state.isPlaying && player.getPlayerState() !== YT.PlayerState.PLAYING) {
+                player.playVideo();
+            } else if (!state.isPlaying && player.getPlayerState() === YT.PlayerState.PLAYING) {
+                player.pauseVideo();
+            }
         }
 
-        // --- Controls now simply update the state in Firebase ---
-        playPauseBtn.addEventListener('click', () => { if (lastKnownState.videoId) set(ref(db, `rooms/${currentRoomId}/audioState/isPlaying`), !lastKnownState.isPlaying); });
-        rewindBtn.addEventListener('click', () => { if (lastKnownState.videoId) set(ref(db, `rooms/${currentRoomId}/audioState/timestamp`), player.getCurrentTime() - 10); });
-        forwardBtn.addEventListener('click', () => { if (lastKnownState.videoId) set(ref(db, `rooms/${currentRoomId}/audioState/timestamp`), player.getCurrentTime() + 10); });
-        progressBar.addEventListener('input', () => isSeeking = true);
-        progressBar.addEventListener('change', () => { isSeeking = false; if (lastKnownState.videoId) set(ref(db, `rooms/${currentRoomId}/audioState/timestamp`), parseFloat(progressBar.value)); });
+        // --- Controls now perform local action and then update Firebase with full state ---
+        function updateFirebaseAudioState(newStateProperties) {
+            if (!currentRoomId || !lastKnownState.videoId || !player) return;
+
+            const currentState = {
+                videoId: player.getVideoData().video_id,
+                title: player.getVideoData().title,
+                artist: player.getVideoData().author,
+                thumbnail: `https://i.ytimg.com/vi/${player.getVideoData().video_id}/hqdefault.jpg`,
+                isPlaying: player.getPlayerState() === YT.PlayerState.PLAYING,
+                timestamp: player.getCurrentTime(),
+                lastUpdatedBy: userId // Crucial: Who updated it
+            };
+            // Merge current player state with any specific properties passed (e.g., isPlaying, timestamp)
+            const finalState = { ...currentState, ...newStateProperties };
+            set(ref(db, `rooms/${currentRoomId}/audioState`), finalState);
+        }
+
+
+        playPauseBtn.addEventListener('click', () => {
+            if (!currentRoomId || !lastKnownState.videoId) return;
+
+            const newIsPlaying = !lastKnownState.isPlaying;
+            if (newIsPlaying) player.playVideo(); else player.pauseVideo(); // Local action
+            updateFirebaseAudioState({ isPlaying: newIsPlaying }); // Update Firebase
+        });
+
+        rewindBtn.addEventListener('click', () => {
+            if (!currentRoomId || !lastKnownState.videoId) return;
+            const newTime = Math.max(0, player.getCurrentTime() - 10);
+            player.seekTo(newTime, true); // Local action
+            updateFirebaseAudioState({ timestamp: newTime }); // Update Firebase
+        });
         
+        forwardBtn.addEventListener('click', () => {
+            if (!currentRoomId || !lastKnownState.videoId) return;
+            const newTime = Math.min(player.getDuration(), player.getCurrentTime() + 10);
+            player.seekTo(newTime, true); // Local action
+            updateFirebaseAudioState({ timestamp: newTime }); // Update Firebase
+        });
+        
+        progressBar.addEventListener('input', () => isSeeking = true);
+        progressBar.addEventListener('change', () => {
+            if (!currentRoomId || !lastKnownState.videoId) return;
+            isSeeking = false;
+            const newTime = parseFloat(progressBar.value);
+            player.seekTo(newTime, true); // Local action
+            updateFirebaseAudioState({ timestamp: newTime }); // Update Firebase
+        });
+        
+        // Helper function to format time (MM:SS)
+        function formatTime(seconds) {
+            if (isNaN(seconds) || seconds < 0) return "00:00";
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            const formattedMinutes = String(minutes).padStart(2, '0');
+            const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+            return `${formattedMinutes}:${formattedSeconds}`;
+        }
+
+        // Interval for continuous UI updates (progress bar, time display, etc.)
         setInterval(() => {
             if (player && player.getPlayerState && !isSeeking) {
-                progressBar.max = player.getDuration() || 0;
-                progressBar.value = player.getCurrentTime() || 0;
-                playPauseBtn.innerHTML = player.getPlayerState() === YT.PlayerState.PLAYING ? '<i class="fas fa-pause-circle"></i>' : '<i class="fas fa-play-circle"></i>';
+                const duration = player.getDuration() || 0;
+                const currentTime = player.getCurrentTime() || 0;
+
+                progressBar.max = duration;
+                progressBar.value = currentTime;
+
+                currentTimeDisplay.textContent = formatTime(currentTime);
+                totalDurationDisplay.textContent = formatTime(duration);
+            } else {
+                // When no music is loaded or player is not ready, reset time displays
+                currentTimeDisplay.textContent = "00:00";
+                totalDurationDisplay.textContent = "00:00";
             }
         }, 500);
 
@@ -222,9 +447,18 @@
         
         function selectSong(songData) {
             searchModal.style.display = 'none';
+
+            // Crucial: Load and play the video IMMEDIATELY for the local user
+            // This satisfies browser autoplay policy, as it's directly from user click
+            if (isPlayerReady) {
+                player.loadVideoById({videoId: songData.videoId, startSeconds: 0});
+                player.playVideo(); // Direct play for the user who clicked
+            }
+
+            // Then, update Firebase to sync all other users.
             const newAudioState = {
                 videoId: songData.videoId, title: songData.title, artist: songData.artist,
-                thumbnail: songData.thumbnail, isPlaying: true, timestamp: 0
+                thumbnail: songData.thumbnail, isPlaying: true, timestamp: 0, lastUpdatedBy: userId
             };
             set(ref(db, `rooms/${currentRoomId}/audioState`), newAudioState);
         }
@@ -249,7 +483,7 @@
                         searchResultsList.appendChild(li);
                     });
                 } else { searchResultsList.innerHTML = '<li>No results found.</li>'; }
-             } catch(e) { console.error(e); searchResultsList.innerHTML = '<li>Error: Could not fetch results. Check API Key quotas.</li>'; }
+             } catch(e) { console.error(e); alert('Error searching. Check API Key or network.'); searchResultsList.innerHTML = '<li>Error: Could not fetch results.</li>'; }
         }
         
         const tag = document.createElement('script');
