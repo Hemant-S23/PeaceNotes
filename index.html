@@ -24,6 +24,21 @@
             --theme-secondary: #a29bfe; /* Light Gravity Blue */
             --theme-accent-glow: rgba(108, 92, 231, 0.5);
         }
+
+        /* NEW: Light Mode Variables */
+        body.light-mode {
+            --bg-color: #f0f2f5; /* Light Gray */
+            --primary-surface: #ffffff; /* White */
+            --secondary-surface: #e0e6ed; /* Lighter Gray for inputs/secondary backgrounds */
+            --primary-text: #333333;
+            --secondary-text: #666666;
+            --shadow-color: rgba(0, 0, 0, 0.15);
+            
+            --theme-primary: #3498db; /* Peter River Blue */
+            --theme-secondary: #5dade2; /* Lighter Blue */
+            --theme-accent-glow: rgba(52, 152, 219, 0.3);
+        }
+
         * { box-sizing: border-box; }
         body {
             font-family: 'Poppins', sans-serif;
@@ -32,6 +47,7 @@
             margin: 0;
             height: 100vh;
             overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
         }
         .screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -43,41 +59,171 @@
             background: var(--primary-surface); padding: 40px; border-radius: 20px;
             box-shadow: 0 10px 40px var(--shadow-color); text-align: center;
             width: 90%; max-width: 400px; border: 1px solid var(--secondary-surface);
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        h1 { font-weight: 700; margin-bottom: 10px; color: #fff; }
+        h1 { font-weight: 700; margin-bottom: 10px; color: var(--primary-text); } /* Dynamic color */
         .container p { color: var(--secondary-text); margin-bottom: 30px; }
         .styled-input {
-            width: 100%; padding: 15px; margin: 15px 0; border: 1px solid var(--secondary-surface);
+            width: 100%; padding: 15px; border: 1px solid var(--secondary-surface);
             border-radius: 12px; background-color: var(--secondary-surface);
-            color: var(--primary-text); font-size: 16px; text-align: center; transition: box-shadow 0.3s;
+            color: var(--primary-text); font-size: 16px; text-align: center; transition: box-shadow 0.3s, background-color 0.3s, color 0.3s, border-color 0.3s;
         }
         .styled-input:focus { outline: none; box-shadow: 0 0 0 3px var(--theme-accent-glow); }
         .btn {
             width: 100%; padding: 15px; border: none; background: linear-gradient(45deg, var(--theme-secondary), var(--theme-primary));
             color: white; font-size: 16px; font-weight: 600; border-radius: 12px; cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease; margin-top: 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease; 
+            margin-top: 10px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
         .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 25px var(--theme-accent-glow); }
-        .btn-secondary { background: var(--secondary-surface); }
+        .btn-secondary { 
+            background: var(--secondary-surface); 
+            color: var(--primary-text); 
+            box-shadow: none; 
+        }
+        .btn-secondary:hover { 
+            background: var(--secondary-surface); 
+            transform: translateY(-2px); 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        body.light-mode .btn-secondary:hover {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15); 
+        }
+
+
         .chat-container { width: 100%; height: 100%; background: var(--bg-color); display: flex; flex-direction: column; }
         .chat-header {
             padding: 15px 20px; background: rgba(23, 21, 59, 0.8); backdrop-filter: blur(10px);
             display: flex; justify-content: space-between; align-items: center;
             flex-shrink: 0; border-bottom: 1px solid var(--secondary-surface);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
+        body.light-mode .chat-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        }
+
         .chat-header h3 { margin: 0; font-weight: 600; }
         .chat-header span { color: var(--theme-primary); font-weight: 700; }
-        .btn-leave { background: #c0392b; }
-        .chat-body { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* NEW: Leave button as icon */
+        .btn-leave { 
+            background: #e74c3c; /* Red background for leave */
+            color: white; /* White icon */
+            font-size: 20px; /* Standard icon size */
+            width: 40px; /* Fixed width for circular */
+            height: 40px; /* Fixed height for circular */
+            border-radius: 50%; /* Make it circular */
+            display: flex; /* Flexbox to center icon */
+            align-items: center;
+            justify-content: center;
+            margin: 0; /* Remove default margin */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2); /* Small shadow */
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer; /* Ensure cursor is pointer */
+        }
+        .btn-leave:hover {
+            background: #c0392b; /* Darker red on hover */
+            transform: scale(1.05); /* Slight scale on hover */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Stronger shadow on hover */
+        }
+        body.light-mode .btn-leave {
+            /* No specific color change needed if it's always red */
+        }
 
-        /* --- THE PREMIUM PLAYER --- */
-        #audio-player-ui {
-            background: rgba(0,0,0,0.2);
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px; 
+        }
+        .header-controls .btn-control {
+            background: none;
+            border: none;
+            color: var(--primary-text); 
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.2s ease, color 0.2s ease;
+            padding: 5px; 
+            border-radius: 50%;
+        }
+        .header-controls .btn-control:hover {
+            transform: scale(1.1);
+            color: var(--theme-primary);
+        }
+
+        #player-toggle-view-button {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(45deg, var(--theme-secondary), var(--theme-primary));
+            padding: 8px 15px;
+            border-radius: 20px; 
+            font-size: 0.9em;
+            font-weight: 600;
+            color: white;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            width: auto; 
+            margin: 0; 
+        }
+        #player-toggle-view-button i {
+            margin-left: 8px; 
+            font-size: 1.1em;
+        }
+        #player-toggle-view-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px var(--theme-accent-glow);
+        }
+
+        .chat-body { 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+        }
+
+        /* --- THE PREMIUM FLOATING PLAYER POPUP --- */
+        #music-player-popup {
+            position: fixed; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%) scale(0.8); 
+            transform-origin: center center; 
+
+            background: rgba(0,0,0,0.2); 
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 25px; flex-shrink: 0; display: none; text-align: center;
-            margin: 20px; border-radius: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5); 
+            width: 90%; 
+            max-width: 400px; 
+            padding: 25px; 
+            text-align: center;
+            z-index: 200; /* Player z-index */
+            
+            opacity: 0; 
+            pointer-events: none; 
+            display: none; 
+
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out; 
+        }
+        body.light-mode #music-player-popup {
+            background: rgba(255, 255, 255, 0.5); 
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        #music-player-popup.visible {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1); 
+            pointer-events: all; 
+        }
+
+        #audio-player-ui { 
+            background: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+            border: none; margin: 0; border-radius: 0; padding: 0; 
+            display: block; 
         }
         .player-content { display: flex; flex-direction: column; align-items: center; }
         #album-art {
@@ -98,12 +244,8 @@
         }
 
         .time-display {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            color: var(--secondary-text);
-            font-size: 0.85em;
-            margin-top: 5px;
+            display: flex; justify-content: space-between; width: 100%; color: var(--secondary-text);
+            font-size: 0.85em; margin-top: 5px;
         }
 
         .player-controls { display: flex; align-items: center; justify-content: center; width: 100%; }
@@ -114,26 +256,105 @@
         .player-controls .btn-control:hover { transform: scale(1.1); color: var(--theme-secondary); }
         .player-controls .btn-main { font-size: 44px; }
         
-        .messages-area { flex-grow: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
+        #music-search-button {
+            margin: 20px auto 0 auto; 
+            display: block;
+            max-width: 250px; 
+        }
+
+        .messages-area { 
+            flex-grow: 1; 
+            padding: 20px; 
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+        }
         .message { padding: 12px 18px; border-radius: 20px; margin-bottom: 10px; max-width: 75%; word-wrap: break-word; line-height: 1.5; }
         .message .sender-name { font-weight: 700; font-size: 0.9em; margin-bottom: 4px; display: block; color: var(--theme-primary); }
         .message.sent { background: linear-gradient(45deg, var(--theme-secondary), var(--theme-primary)); color: white; align-self: flex-end; border-bottom-right-radius: 5px; }
         .message.sent .sender-name { color: rgba(255,255,255,0.8); }
         .message.received { background-color: var(--secondary-surface); align-self: flex-start; border-bottom-left-radius: 5px; }
         .message.system { background: none; color: var(--secondary-text); font-style: italic; font-size: 0.9em; align-self: center; text-align: center; }
-        .message-input-form { display: flex; padding: 20px; background: var(--primary-surface); flex-shrink: 0; }
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 100; }
-        .modal-content { background: var(--primary-surface); padding: 25px; border-radius: 20px; width: 90%; max-width: 500px; max-height: 80vh; display: flex; flex-direction: column; border: 1px solid var(--secondary-surface); }
+        
+        /* Message Input Form Layout */
+        .message-input-form {
+            display: flex;
+            padding: 20px;
+            background: var(--primary-surface);
+            flex-shrink: 0;
+            gap: 10px; 
+            align-items: center; 
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .message-input-form .styled-input {
+            margin: 0; 
+            flex-grow: 1; 
+            text-align: left; 
+        }
+        .message-input-form .btn {
+            width: 50px; /* Fixed width for a square/round button */
+            height: 50px; /* Fixed height for a square/round button */
+            padding: 0; /* Remove padding as width/height are fixed */
+            margin-top: 0; 
+            border-radius: 50%; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2); 
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+        }
+        .message-input-form .btn i {
+            margin: 0; 
+            font-size: 1.2em; 
+        }
+        .message-input-form .btn:hover {
+            transform: translateY(-1px); 
+            box-shadow: 0 3px 12px var(--theme-accent-glow);
+        }
+        
+        /* Modals (General styling applies to all modals) */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 300; } /* Adjusted z-index */
+        .modal-content { 
+            background: var(--primary-surface); padding: 25px; border-radius: 20px; width: 90%; max-width: 500px; max-height: 80vh; 
+            display: flex; flex-direction: column; border: 1px solid var(--secondary-surface);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--secondary-surface); padding-bottom: 15px; margin-bottom: 20px; }
+        .modal-header h2 { margin: 0; color: var(--primary-text); } 
+        .modal-close { font-size: 28px; cursor: pointer; color: var(--secondary-text); }
+
+        /* Search Modal Specifics */
         .search-result-item { display: flex; align-items: center; padding: 10px; border-radius: 8px; cursor: pointer; transition: background-color 0.2s ease; }
         .search-result-item:hover { background-color: var(--secondary-surface); }
         .search-result-item img { width: 60px; height: 60px; border-radius: 8px; margin-right: 15px; }
-        .search-result-info h4 { margin: 0 0 5px 0; font-size: 1em; }
+        .search-result-info h4 { margin: 0 0 5px 0; font-size: 1em; color: var(--primary-text); } 
         .search-result-info p { margin: 0; font-size: 0.9em; color: var(--secondary-text); }
-        /* Specific modal content for delete confirmation */
+
+        /* Delete Confirmation Modal Specifics */
         #delete-room-modal .modal-body { text-align: center; }
         #delete-room-modal .modal-body p { margin-bottom: 20px; }
-        #delete-room-modal .modal-body .btn { margin-bottom: 10px; } /* Space between buttons */
+        #delete-room-modal .modal-body .btn { margin-bottom: 10px; }
+
+        /* Custom Alert Modal Styling */
+        #custom-alert-modal .modal-content { text-align: center; }
+        #custom-alert-modal .modal-header { justify-content: center; border-bottom: none; padding-bottom: 0; margin-bottom: 15px; }
+        #custom-alert-modal .modal-header h2 { font-size: 1.5em; }
+        #custom-alert-modal .modal-body { margin-top: 10px; }
+        #custom-alert-modal .modal-body .btn { width: auto; padding: 10px 30px; margin-top: 20px; }
+
+        /* Share Room Modal Styling */
+        #share-room-modal .modal-body { text-align: center; }
+        #share-room-modal .room-info-display {
+            background-color: var(--secondary-surface);
+            padding: 15px; border-radius: 12px; margin-bottom: 20px; word-break: break-all;
+            color: var(--primary-text); 
+        }
+        #share-room-modal .room-info-display p { margin: 5px 0; font-size: 0.9em; color: var(--secondary-text); }
+        #share-room-modal .room-info-display strong { color: var(--primary-text); font-size: 1.2em; }
+        #share-room-modal .action-buttons { display: flex; gap: 10px; margin-top: 10px; }
+        #share-room-modal .action-buttons .btn { flex-grow: 1; width: auto; padding: 10px 15px; font-size: 0.9em; }
+        #copy-pin-button { background: var(--secondary-surface); color: var(--primary-text); }
+        #copy-pin-button:hover { background: #3a3a3a; transform: translateY(-2px); }
+
     </style>
 </head>
 <body>
@@ -141,17 +362,54 @@
 
     <div id="name-screen" class="screen active"> <div class="container"> <h1>PeaceNotes</h1> <p>The Premium Listening Experience</p> <input type="text" id="name-input" class="styled-input" placeholder="Your Name" autocomplete="off"> <button id="continue-button" class="btn">Enter</button> </div> </div>
     <div id="home-screen" class="screen"> <div class="container"> <h1 id="welcome-message"></h1> <p>Create a room or enter a PIN to listen with friends.</p> <button id="create-room-button" class="btn">Create New Room</button> <p style="margin: 20px 0;">OR</p> <input type="text" id="pin-input" class="styled-input" placeholder="Enter Room PIN"> <button id="join-button" class="btn btn-secondary">Join Room</button> </div> </div>
-    <div id="chat-screen" class="screen"> <div class="chat-container"> <div class="chat-header"> <h3>Room PIN: <span id="room-pin-display"></span></h3> <button id="leave-room-button" class="btn btn-leave">Leave</button> </div> <div class="chat-body"> <div id="audio-player-ui"> <div class="player-content"> <img id="album-art" src="https://via.placeholder.com/150" alt="Album Art"> <h4 id="song-title">No music selected</h4> <p id="song-artist">Use the search button to find music</p> <div class="progress-container"> 
-                            <input type="range" id="progress-bar" value="0" step="1"> 
-                            <div class="time-display">
-                                <span id="current-time">00:00</span>
-                                <span id="total-duration">00:00</span>
-                            </div>
-                        </div> 
-                        <div class="player-controls"> <button id="rewind-button" class="btn-control"><i class="fas fa-backward-step"></i></button> <button id="play-pause-button" class="btn-control btn-main"><i class="fas fa-play-circle"></i></button> <button id="forward-button" class="btn-control"><i class="fas fa-forward-step"></i></button> </div> </div> </div> <button id="music-search-button" class="btn" style="margin: 20px;">Search Music</button> <div class="messages-area" id="messages-area"></div> </div> <form class="message-input-form" id="message-form"> <input type="text" id="message-input" class="styled-input" placeholder="Type a message..." autocomplete="off"> <button type="submit" class="btn">Send</button> </form> </div> </div>
+    <div id="chat-screen" class="screen"> 
+        <div class="chat-container"> 
+            <div class="chat-header"> 
+                <h3>Room PIN: <span id="room-pin-display"></span></h3> 
+                <div class="header-controls">
+                    <button id="theme-toggle-button" class="btn-control" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+                    <!-- Player Toggle View Button in Header -->
+                    <button id="player-toggle-view-button" class="btn" title="Toggle Player View">Vibana <i class="fas fa-plus"></i></button>
+                    <!-- NEW: Leave button as icon -->
+                    <button id="leave-room-button" class="btn-control btn-leave" title="Leave Room"><i class="fas fa-right-from-bracket"></i></button>
+                </div>
+            </div> 
+            <div class="chat-body"> 
+                <div class="messages-area" id="messages-area"></div> 
+            </div> 
+            <form class="message-input-form" id="message-form"> 
+                <input type="text" id="message-input" class="styled-input" placeholder="Type a message..." autocomplete="off"> 
+                <button type="submit" class="btn"><i class="fas fa-paper-plane"></i></button> 
+            </form> 
+        </div> 
+    </div>
+    
+    <!-- Music Player Pop-up (Fixed position, NOT inside chat-body) -->
+    <div id="music-player-popup"> 
+        <div id="audio-player-ui"> 
+            <div class="player-content"> 
+                <img id="album-art" src="https://via.placeholder.com/150" alt="Album Art"> 
+                <h4 id="song-title">No music selected</h4> 
+                <p id="song-artist">Use the search button to find music</p> 
+                <div class="progress-container"> 
+                    <input type="range" id="progress-bar" value="0" step="1"> 
+                    <div class="time-display">
+                        <span id="current-time">00:00</span>
+                        <span id="total-duration">00:00</span>
+                    </div>
+                </div> 
+                <div class="player-controls"> 
+                    <button id="rewind-button" class="btn-control"><i class="fas fa-backward-step"></i></button> 
+                    <button id="play-pause-button" class="btn-control btn-main"><i class="fas fa-play-circle"></i></button> 
+                    <button id="forward-button" class="btn-control"><i class="fas fa-forward-step"></i></button> 
+                </div> 
+            </div> 
+        </div> 
+        <button id="music-search-button" class="btn">Search Music</button> 
+    </div> 
+
     <div id="search-modal" class="modal"> <div class="modal-content"> <div class="modal-header"> <h2>Search YouTube</h2> <span class="modal-close" id="modal-close-button">×</span> </div> <div class="modal-body"> <form id="modal-search-form" style="display: flex; margin-bottom: 15px;"> <input type="text" id="modal-search-input" class="styled-input" style="margin: 0;" placeholder="Enter song or artist..."> <button type="submit" class="btn" style="width: 100px; margin-left: 10px; margin-top: 0;">Search</button> </form> <ul id="search-results"></ul> </div> </div> </div>
 
-    <!-- NEW: Delete Room Confirmation Modal -->
     <div id="delete-room-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -163,7 +421,40 @@
                 <p>If you leave, the room and **all its data (messages, music, members)** will be **permanently deleted** and cannot be recovered.</p>
                 <p>Are you sure you want to delete this room permanently?</p>
                 <button id="confirm-delete-button" class="btn" style="background: #e74c3c;">Yes, Delete Room Permanently</button>
-                <button id="cancel-delete-button" class="btn btn-secondary">No, Just Leave</button>
+                <button id="cancel-delete-button" class="btn btn-secondary">No, Stay in Room</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="custom-alert-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="custom-alert-title">Notification</h2>
+            </div>
+            <div class="modal-body">
+                <p id="custom-alert-message">This is a custom alert message.</p>
+                <button id="custom-alert-close-button" class="btn">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="share-room-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Room Created! Share Now.</h2>
+                <span class="modal-close" id="share-modal-close-button">×</span>
+            </div>
+            <div class="modal-body">
+                <div class="room-info-display">
+                    <p>Your Room PIN: <strong><span id="share-room-pin-display"></span></strong></p>
+                    <p>Share this link:</p>
+                    <p><strong><span id="share-room-link-display"></span></strong></p>
+                </div>
+                <div class="action-buttons">
+                    <button id="copy-pin-button" class="btn">Copy PIN</button>
+                    <button id="share-link-button" class="btn">Share Link</button>
+                </div>
+                <button id="share-modal-ok-button" class="btn btn-secondary" style="width: auto; margin-top: 20px;">OK</button>
             </div>
         </div>
     </div>
@@ -185,101 +476,205 @@
 
         // --- State and Element Variables ---
         let currentRoomId, player, roomListeners = [], isSeeking = false, isPlayerReady = false, currentUserName;
-        let lastKnownState = {}; // This will hold the last state received from Firebase
+        let lastKnownState = {}; 
         const userId = 'user_' + Math.random().toString(36).substr(2, 9);
         const nameScreen = document.getElementById('name-screen'), nameInput = document.getElementById('name-input'), continueBtn = document.getElementById('continue-button'), welcomeMessage = document.getElementById('welcome-message'), homeScreen = document.getElementById('home-screen'), chatScreen = document.getElementById('chat-screen'), createRoomBtn = document.getElementById('create-room-button'), joinBtn = document.getElementById('join-button'), pinInput = document.getElementById('pin-input'), roomPinDisplay = document.getElementById('room-pin-display'), leaveRoomBtn = document.getElementById('leave-room-button'), messagesArea = document.getElementById('messages-area'), messageForm = document.getElementById('message-form'), messageInput = document.getElementById('message-input'), audioPlayerUI = document.getElementById('audio-player-ui'), albumArt = document.getElementById('album-art'), songTitle = document.getElementById('song-title'), songArtist = document.getElementById('song-artist'), playPauseBtn = document.getElementById('play-pause-button'), rewindBtn = document.getElementById('rewind-button'), forwardBtn = document.getElementById('forward-button'), progressBar = document.getElementById('progress-bar'), musicSearchBtn = document.getElementById('music-search-button'), searchModal = document.getElementById('search-modal'), modalCloseBtn = document.getElementById('modal-close-button'), modalSearchForm = document.getElementById('modal-search-form'), modalSearchInput = document.getElementById('modal-search-input'), searchResultsList = document.getElementById('search-results');
         
         const currentTimeDisplay = document.getElementById('current-time');
         const totalDurationDisplay = document.getElementById('total-duration');
 
-        // NEW: Delete Room Modal Elements
         const deleteRoomModal = document.getElementById('delete-room-modal');
         const deleteModalCloseBtn = document.getElementById('delete-modal-close-button');
         const confirmDeleteButton = document.getElementById('confirm-delete-button');
         const cancelDeleteButton = document.getElementById('cancel-delete-button');
 
+        const customAlertModal = document.getElementById('custom-alert-modal');
+        const customAlertTitle = document.getElementById('custom-alert-title');
+        const customAlertMessage = document.getElementById('custom-alert-message');
+        const customAlertCloseBtn = document.getElementById('custom-alert-close-button');
 
-        // --- Core App Logic (Name, Rooms, Chat) ---
-        continueBtn.addEventListener('click', () => { const name = nameInput.value.trim(); if (name) { currentUserName = name; welcomeMessage.textContent = `Welcome, ${currentUserName}!`; nameScreen.classList.remove('active'); homeScreen.classList.add('active'); } else { alert('Please enter your name.'); }});
-        createRoomBtn.addEventListener('click', () => joinRoom(Math.floor(100000 + Math.random() * 900000).toString()));
-        joinBtn.addEventListener('click', () => { const roomId = pinInput.value.trim(); if (roomId) joinRoom(roomId); else alert('Please enter a Room PIN.'); });
-        
-        // Modified leaveRoom logic
-        leaveRoomBtn.addEventListener('click', async () => {
-            if (!currentRoomId) return;
-            const membersSnapshot = await get(child(ref(db, `rooms/${currentRoomId}`), 'members'));
-            const memberCount = membersSnapshot.size;
+        const shareRoomModal = document.getElementById('share-room-modal');
+        const shareRoomPinDisplay = document.getElementById('share-room-pin-display');
+        const shareRoomLinkDisplay = document.getElementById('share-room-link-display');
+        const copyPinButton = document.getElementById('copy-pin-button');
+        const shareLinkButton = document.getElementById('share-link-button');
+        const shareModalCloseBtn = document.getElementById('share-modal-close-button');
+        const shareModalOkButton = document.getElementById('share-modal-ok-button');
 
-            if (memberCount === 1) { // If this user is the only one left
-                deleteRoomModal.style.display = 'flex'; // Show confirmation modal
-            } else { // If there are other members, just leave
-                performLeaveRoom(false); // false means don't delete the room
+        const musicPlayerPopup = document.getElementById('music-player-popup'); 
+        const playerToggleViewButton = document.getElementById('player-toggle-view-button');
+        const themeToggleButton = document.getElementById('theme-toggle-button');
+
+
+        let currentFileUrl = window.location.origin + window.location.pathname;
+
+        // --- Helper for Alphanumeric Code Generation ---
+        function generateAlphanumericCode(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return result;
+        }
+
+        // --- Custom Alert Function ---
+        function showCustomAlert(title, message) {
+            customAlertTitle.textContent = title;
+            customAlertMessage.textContent = message;
+            customAlertModal.style.display = 'flex';
+        }
+        customAlertCloseBtn.addEventListener('click', () => customAlertModal.style.display = 'none');
+
+
+        // --- Theme Toggle Function ---
+        function toggleTheme() {
+            const htmlElement = document.documentElement; 
+            if (htmlElement.classList.contains('light-mode')) {
+                htmlElement.classList.remove('light-mode');
+                themeToggleButton.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                htmlElement.classList.add('light-mode');
+                themeToggleButton.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        themeToggleButton.addEventListener('click', toggleTheme);
+
+        // Apply saved theme on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.documentElement.classList.add('light-mode');
+                themeToggleButton.innerHTML = '<i class="fas fa-sun"></i>';
+            } else { 
+                document.documentElement.classList.remove('light-mode');
+                themeToggleButton.innerHTML = '<i class="fas fa-moon"></i>';
             }
         });
 
-        // NEW: Handles confirmed deletion or simple leave
-        async function performLeaveRoom(shouldDeleteRoom) {
-            if (!currentRoomId) return;
-            const roomRef = ref(db, `rooms/${currentRoomId}`);
-            
-            // First, remove the current user from the members list
-            await remove(child(roomRef, `members/${userId}`));
 
-            if (shouldDeleteRoom) {
-                // If confirmed, delete the entire room node
-                console.log(`User confirmed deletion. Permanently deleting room: ${currentRoomId}`);
-                await remove(roomRef);
+        // --- Core App Logic (Name, Rooms, Chat) ---
+        continueBtn.addEventListener('click', () => {
+            const name = nameInput.value.trim();
+            if (name) {
+                currentUserName = name;
+                welcomeMessage.textContent = `Welcome, ${currentUserName}!`;
+                
+                const urlParams = new URLSearchParams(window.location.search);
+                const roomIdFromUrl = urlParams.get('room');
+                if (roomIdFromUrl) {
+                    joinRoom(roomIdFromUrl, false); 
+                } else {
+                    nameScreen.classList.remove('active');
+                    homeScreen.classList.add('active'); 
+                }
             } else {
-                // Check if the room became empty after this user left (in case of race condition)
-                const membersSnapshot = await get(child(roomRef, 'members'));
-                if (!membersSnapshot.exists() || membersSnapshot.size === 0) {
-                     console.log(`Room became empty after user left. Deleting room: ${currentRoomId}`);
-                     await remove(roomRef); // Still delete if it became truly empty
+                showCustomAlert('Error', 'Please enter your name.');
+            }
+        });
+        
+        createRoomBtn.addEventListener('click', () => {
+            const newRoomId = generateAlphanumericCode(6);
+            joinRoom(newRoomId, true); 
+        });
+        
+        joinBtn.addEventListener('click', () => {
+            const roomId = pinInput.value.trim();
+            if (roomId) {
+                joinRoom(roomId, false); 
+            } else {
+                showCustomAlert('Error', 'Please enter a Room PIN.');
+            }
+        });
+        
+        leaveRoomBtn.addEventListener('click', async () => {
+            if (!currentRoomId) return;
+            const membersSnapshot = await get(child(ref(db, `rooms/${currentRoomId}`), 'members'));
+            const memberCount = membersSnapshot.exists() ? membersSnapshot.size : 0;
+
+            if (memberCount === 1) { 
+                deleteRoomModal.style.display = 'flex'; 
+            } else { 
+                await executeLeaveAndDeletion(false); 
+            }
+        });
+
+        async function executeLeaveAndDeletion(shouldDeleteRoomConfirmedByUser) {
+            if (!currentRoomId) return;
+
+            const roomRef = ref(db, `rooms/${currentRoomId}`);
+            const memberRef = child(roomRef, `members/${userId}`);
+            
+            await remove(memberRef); 
+
+            let shouldDeleteRoom = shouldDeleteRoomConfirmedByUser;
+
+            if (!shouldDeleteRoom) { 
+                const currentMembersSnapshot = await get(child(roomRef, 'members'));
+                if (!currentMembersSnapshot.exists() || currentMembersSnapshot.size === 0) {
+                    console.log(`Room became empty after user left. Auto-deleting room: ${currentRoomId}`);
+                    shouldDeleteRoom = true; 
                 }
             }
+
+            if (shouldDeleteRoom) {
+                console.log(`Permanently deleting room: ${currentRoomId}`);
+                await remove(roomRef); 
+            } else {
+                console.log(`User left, room ${currentRoomId} remains (other members might still be there).`);
+            }
             
-            // Clean up UI and state
             roomListeners.forEach(off => off());
             roomListeners = [];
             currentRoomId = null;
             if (player) player.stopVideo();
             chatScreen.classList.remove('active');
             homeScreen.classList.add('active');
-            messagesArea.innerHTML = ''; // Clear chat history
-            audioPlayerUI.style.display = 'none'; // Hide player UI
-            totalDurationDisplay.textContent = "00:00"; // Reset time display
+            messagesArea.innerHTML = '';
+            // Hide and reset player popup when leaving room
+            musicPlayerPopup.classList.remove('visible'); // Hide the popup
+            setTimeout(() => musicPlayerPopup.style.display = 'none', 300); // Allow transition to complete
             currentTimeDisplay.textContent = "00:00";
-            progressBar.value = 0; // Reset progress bar
+            totalDurationDisplay.textContent = "00:00";
+            progressBar.value = 0;
             songTitle.textContent = "No music selected";
             songArtist.textContent = "Use the search button to find music";
+            playerToggleViewButton.innerHTML = 'Vibana <i class="fas fa-plus"></i>'; // Reset player view button text/icon
 
-            deleteRoomModal.style.display = 'none'; // Hide modal if open
+            deleteRoomModal.style.display = 'none'; 
         }
 
-        // Event listeners for the new delete confirmation modal
-        deleteModalCloseBtn.addEventListener('click', () => {
-            deleteRoomModal.style.display = 'none';
-        });
+        deleteModalCloseBtn.addEventListener('click', () => { deleteRoomModal.style.display = 'none'; });
+        confirmDeleteButton.addEventListener('click', () => { executeLeaveAndDeletion(true); });
+        cancelDeleteButton.addEventListener('click', () => { deleteRoomModal.style.display = 'none'; /* User stays in room*/ });
 
-        confirmDeleteButton.addEventListener('click', () => {
-            performLeaveRoom(true); // User confirmed deletion
-        });
+        async function joinRoom(roomId, isNewRoom = false) {
+            let roomExists = (await get(ref(db, `rooms/${roomId}`))).exists();
 
-        cancelDeleteButton.addEventListener('click', () => {
-            performLeaveRoom(false); // User chose not to delete, just leave
-        });
+            if (!isNewRoom && !roomExists) {
+                showCustomAlert('Room Not Found', 'Room does not exist or has been deleted. Please check the PIN or create a new room.');
+                return; 
+            }
+            if (isNewRoom && roomExists) {
+                 showCustomAlert('Room Exists', 'A room with this PIN already exists. Please try creating a new one or join the existing one.');
+                 return; 
+            }
 
-
-        function joinRoom(roomId) {
             currentRoomId = roomId;
             const membersRef = ref(db, `rooms/${currentRoomId}/members/${userId}`);
             set(membersRef, { name: currentUserName });
-            onDisconnect(membersRef).remove(); // Ensures user is removed on disconnect
+            onDisconnect(membersRef).remove();
             homeScreen.classList.remove('active');
             chatScreen.classList.add('active');
             roomPinDisplay.textContent = currentRoomId;
             messagesArea.innerHTML = '';
             attachRoomListeners();
+
+            if (isNewRoom) {
+                showRoomCreatedModal(roomId); 
+            }
         }
         messageForm.addEventListener('submit', e => { e.preventDefault(); const text = messageInput.value.trim(); if (text && currentRoomId) set(push(ref(db, `rooms/${currentRoomId}/messages`)), { text, senderId: userId, senderName: currentUserName, timestamp: serverTimestamp() }); messageInput.value = ''; });
         function displayMessage(msg, type) { const el = document.createElement('div'); el.classList.add('message', type); el.innerHTML = `<span class="sender-name">${type === 'sent' ? 'You' : msg.senderName}</span><div>${msg.text}</div>`; messagesArea.appendChild(el); messagesArea.scrollTop = messagesArea.scrollHeight; }
@@ -293,23 +688,28 @@
             const membersRef = ref(db, `rooms/${currentRoomId}/members`);
             
             const audioOff = onValue(audioStateRef, (snapshot) => {
-                if (!snapshot.exists()) { audioPlayerUI.style.display = 'none'; return; }
+                if (!snapshot.exists()) { 
+                    musicPlayerPopup.classList.remove('visible'); // Hide popup
+                    setTimeout(() => musicPlayerPopup.style.display = 'none', 300); // After transition
+                    return; 
+                }
+                
                 const state = snapshot.val();
-                lastKnownState = state; // Always update our local copy of the master state
+                lastKnownState = state; 
+                
+                // Show the popup when music state exists
+                musicPlayerPopup.style.display = 'block';
+                setTimeout(() => musicPlayerPopup.classList.add('visible'), 10); // Trigger transition
 
-                // This is the core sync logic based on who updated Firebase
-                if (isPlayerReady) { // Ensure player is ready before attempting to sync player state
+                if (isPlayerReady) { 
                     if (state.lastUpdatedBy === userId) {
-                        // This update came from *this* client. Only update UI (play/pause icon, progress bar).
-                        // Do NOT re-issue play/pause/seek commands to the player to prevent feedback loops.
-                        updatePlayerUI(state); // Update local UI based on confirmed master state
-                        // The player's current position and state (play/pause) are already correct due to local action
-                        // and are just being confirmed by Firebase.
+                        updatePlayerUI(state); 
                     } else {
-                        // This update came from *another* client. Sync our player to their state.
                         syncLocalPlayerToState(state);
-                        updatePlayerUI(state); // Update local UI
+                        updatePlayerUI(state); 
                     }
+                } else {
+                    updatePlayerUI(state); // Update UI even if player not ready, data exists
                 }
             });
             
@@ -323,38 +723,31 @@
 
         function onPlayerReady() {
             isPlayerReady = true;
-            // If we received a state from Firebase *before* the player was ready, sync it now.
-            if (Object.keys(lastKnownState).length > 0) { // Check if lastKnownState is not empty
+            if (Object.keys(lastKnownState).length > 0) { 
                 syncLocalPlayerToState(lastKnownState);
-                updatePlayerUI(lastKnownState); // Also update UI on player ready
+                updatePlayerUI(lastKnownState); 
             }
         }
 
         function updatePlayerUI(state) {
-            audioPlayerUI.style.display = 'block';
             albumArt.src = state.thumbnail;
             songTitle.textContent = state.title;
             songArtist.textContent = state.artist;
             
-            // Update play/pause button icon based on master state
             playPauseBtn.innerHTML = state.isPlaying ? '<i class="fas fa-pause-circle"></i>' : '<i class="fas fa-play-circle"></i>';
         }
 
         function syncLocalPlayerToState(state) {
-            // Check if player exists and is ready
             if (!isPlayerReady || !player) return;
 
-            // Load new video if different
             if (player.getVideoData()?.video_id !== state.videoId) {
                 player.loadVideoById({videoId: state.videoId, startSeconds: state.timestamp});
             } else {
-                // Seek if time difference is significant
                 if (Math.abs(player.getCurrentTime() - state.timestamp) > 2.5) {
                     player.seekTo(state.timestamp, true);
                 }
             }
 
-            // Play or Pause based on state
             if (state.isPlaying && player.getPlayerState() !== YT.PlayerState.PLAYING) {
                 player.playVideo();
             } else if (!state.isPlaying && player.getPlayerState() === YT.PlayerState.PLAYING) {
@@ -362,45 +755,48 @@
             }
         }
 
-        // --- Controls now perform local action and then update Firebase with full state ---
         function updateFirebaseAudioState(newStateProperties) {
-            if (!currentRoomId || !lastKnownState.videoId || !player) return;
+            if (!currentRoomId || !player) return; 
+
+            const videoId = player.getVideoData()?.video_id || (lastKnownState.videoId || '');
+            const title = player.getVideoData()?.title || (lastKnownState.title || 'No music selected');
+            const artist = player.getVideoData()?.author || (lastKnownState.artist || 'Unknown Artist');
+            const thumbnail = videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : (lastKnownState.thumbnail || 'https://via.placeholder.com/150');
+
 
             const currentState = {
-                videoId: player.getVideoData().video_id,
-                title: player.getVideoData().title,
-                artist: player.getVideoData().author,
-                thumbnail: `https://i.ytimg.com/vi/${player.getVideoData().video_id}/hqdefault.jpg`,
+                videoId: videoId,
+                title: title,
+                artist: artist,
+                thumbnail: thumbnail,
                 isPlaying: player.getPlayerState() === YT.PlayerState.PLAYING,
                 timestamp: player.getCurrentTime(),
-                lastUpdatedBy: userId // Crucial: Who updated it
+                lastUpdatedBy: userId 
             };
-            // Merge current player state with any specific properties passed (e.g., isPlaying, timestamp)
             const finalState = { ...currentState, ...newStateProperties };
             set(ref(db, `rooms/${currentRoomId}/audioState`), finalState);
         }
-
 
         playPauseBtn.addEventListener('click', () => {
             if (!currentRoomId || !lastKnownState.videoId) return;
 
             const newIsPlaying = !lastKnownState.isPlaying;
-            if (newIsPlaying) player.playVideo(); else player.pauseVideo(); // Local action
-            updateFirebaseAudioState({ isPlaying: newIsPlaying }); // Update Firebase
+            if (newIsPlaying) player.playVideo(); else player.pauseVideo(); 
+            updateFirebaseAudioState({ isPlaying: newIsPlaying }); 
         });
 
         rewindBtn.addEventListener('click', () => {
             if (!currentRoomId || !lastKnownState.videoId) return;
             const newTime = Math.max(0, player.getCurrentTime() - 10);
-            player.seekTo(newTime, true); // Local action
-            updateFirebaseAudioState({ timestamp: newTime }); // Update Firebase
+            player.seekTo(newTime, true); 
+            updateFirebaseAudioState({ timestamp: newTime }); 
         });
         
         forwardBtn.addEventListener('click', () => {
             if (!currentRoomId || !lastKnownState.videoId) return;
             const newTime = Math.min(player.getDuration(), player.getCurrentTime() + 10);
-            player.seekTo(newTime, true); // Local action
-            updateFirebaseAudioState({ timestamp: newTime }); // Update Firebase
+            player.seekTo(newTime, true); 
+            updateFirebaseAudioState({ timestamp: newTime }); 
         });
         
         progressBar.addEventListener('input', () => isSeeking = true);
@@ -408,11 +804,10 @@
             if (!currentRoomId || !lastKnownState.videoId) return;
             isSeeking = false;
             const newTime = parseFloat(progressBar.value);
-            player.seekTo(newTime, true); // Local action
-            updateFirebaseAudioState({ timestamp: newTime }); // Update Firebase
+            player.seekTo(newTime, true); 
+            updateFirebaseAudioState({ timestamp: newTime }); 
         });
         
-        // Helper function to format time (MM:SS)
         function formatTime(seconds) {
             if (isNaN(seconds) || seconds < 0) return "00:00";
             const minutes = Math.floor(seconds / 60);
@@ -422,7 +817,6 @@
             return `${formattedMinutes}:${formattedSeconds}`;
         }
 
-        // Interval for continuous UI updates (progress bar, time display, etc.)
         setInterval(() => {
             if (player && player.getPlayerState && !isSeeking) {
                 const duration = player.getDuration() || 0;
@@ -434,7 +828,6 @@
                 currentTimeDisplay.textContent = formatTime(currentTime);
                 totalDurationDisplay.textContent = formatTime(duration);
             } else {
-                // When no music is loaded or player is not ready, reset time displays
                 currentTimeDisplay.textContent = "00:00";
                 totalDurationDisplay.textContent = "00:00";
             }
@@ -448,19 +841,20 @@
         function selectSong(songData) {
             searchModal.style.display = 'none';
 
-            // Crucial: Load and play the video IMMEDIATELY for the local user
-            // This satisfies browser autoplay policy, as it's directly from user click
             if (isPlayerReady) {
                 player.loadVideoById({videoId: songData.videoId, startSeconds: 0});
-                player.playVideo(); // Direct play for the user who clicked
+                player.playVideo(); 
             }
 
-            // Then, update Firebase to sync all other users.
             const newAudioState = {
                 videoId: songData.videoId, title: songData.title, artist: songData.artist,
                 thumbnail: songData.thumbnail, isPlaying: true, timestamp: 0, lastUpdatedBy: userId
             };
-            set(ref(db, `rooms/${currentRoomId}/audioState`), newAudioState);
+            updateFirebaseAudioState(newAudioState); 
+            
+            musicPlayerPopup.style.display = 'block';
+            setTimeout(() => musicPlayerPopup.classList.add('visible'), 10); 
+            playerToggleViewButton.innerHTML = 'Vibana <i class="fas fa-minus"></i>';
         }
 
         async function searchYouTube(query) {
@@ -483,12 +877,78 @@
                         searchResultsList.appendChild(li);
                     });
                 } else { searchResultsList.innerHTML = '<li>No results found.</li>'; }
-             } catch(e) { console.error(e); alert('Error searching. Check API Key or network.'); searchResultsList.innerHTML = '<li>Error: Could not fetch results.</li>'; }
+             } catch(e) { console.error(e); showCustomAlert('Error', 'Could not search. Check API Key or network.'); searchResultsList.innerHTML = '<li>Error: Could not fetch results.</li>'; }
         }
         
         const tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         document.head.appendChild(tag);
+
+        // --- Share Room Modal Logic ---
+        function showRoomCreatedModal(roomId) {
+            const shareLink = `${currentFileUrl}?room=${roomId}`;
+            shareRoomPinDisplay.textContent = roomId;
+            shareRoomLinkDisplay.textContent = shareLink;
+            shareRoomModal.style.display = 'flex';
+        }
+
+        shareModalCloseBtn.addEventListener('click', () => shareRoomModal.style.display = 'none');
+        shareModalOkButton.addEventListener('click', () => shareRoomModal.style.display = 'none');
+
+        copyPinButton.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(shareRoomPinDisplay.textContent);
+                showCustomAlert('Copied!', 'Room PIN has been copied to your clipboard.');
+            } catch (err) {
+                showCustomAlert('Error', 'Failed to copy PIN. Please copy it manually.');
+                console.error('Failed to copy PIN: ', err);
+            }
+        });
+
+        shareLinkButton.addEventListener('click', async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'Join my PeaceNotes Room!',
+                        text: `Hey, join my PeaceNotes room! PIN: ${shareRoomPinDisplay.textContent}`,
+                        url: shareRoomLinkDisplay.textContent,
+                    });
+                } catch (error) {
+                    if (error.name === 'AbortError') {
+                        console.log('Share operation aborted.');
+                    } else {
+                        showCustomAlert('Error', 'Failed to share link. Please copy it manually.');
+                        console.error('Error sharing:', error);
+                    }
+                }
+            } else {
+                try {
+                    await navigator.clipboard.writeText(shareRoomLinkDisplay.textContent);
+                    showCustomAlert('Copied!', 'Room link has been copied to your clipboard (Web Share API not supported).');
+                } catch (err) {
+                    showCustomAlert('Error', 'Failed to copy link. Please copy it manually.');
+                    console.error('Failed to copy link: ', err);
+                }
+            }
+        });
+
+        // --- Minimize/Maximize Player Logic (Controlled by header button) ---
+        playerToggleViewButton.addEventListener('click', togglePlayerPopup);
+
+        function togglePlayerPopup() {
+            if (musicPlayerPopup.classList.contains('visible')) {
+                // Hide (minimize)
+                musicPlayerPopup.classList.remove('visible');
+                setTimeout(() => musicPlayerPopup.style.display = 'none', 300); // Hide completely after transition
+                playerToggleViewButton.innerHTML = 'Vibana <i class="fas fa-plus"></i>'; // Update button text/icon
+            } else {
+                // Show (maximize)
+                musicPlayerPopup.style.display = 'block';
+                setTimeout(() => musicPlayerPopup.classList.add('visible'), 10); // Show and trigger transition
+                playerToggleViewButton.innerHTML = 'Vibana <i class="fas fa-minus"></i>'; // Update button text/icon
+            }
+        }
+
     </script>
 </body>
 </html>
