@@ -1,1 +1,260 @@
-hello
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeaceNotes - The Premium Experience</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <style>
+        /* --- $100,000 USD PREMIUM DESIGN SYSTEM --- */
+        :root {
+            --bg-color: #0d0c22; /* Deep Imperial Blue */
+            --primary-surface: #17153B; /* Dark Purple */
+            --secondary-surface: #2a2a60;
+            --primary-text: #f0f0f0;
+            --secondary-text: #a0a0c0;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            
+            /* A vibrant, electric color palette */
+            --theme-primary: #6c5ce7; /* Gravity Blue */
+            --theme-secondary: #a29bfe; /* Light Gravity Blue */
+            --theme-accent-glow: rgba(108, 92, 231, 0.5);
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center; flex-direction: column;
+            opacity: 0; visibility: hidden; transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .screen.active { opacity: 1; visibility: visible; }
+        .container {
+            background: var(--primary-surface); padding: 40px; border-radius: 20px;
+            box-shadow: 0 10px 40px var(--shadow-color); text-align: center;
+            width: 90%; max-width: 400px; border: 1px solid var(--secondary-surface);
+        }
+        h1 { font-weight: 700; margin-bottom: 10px; color: #fff; }
+        .container p { color: var(--secondary-text); margin-bottom: 30px; }
+        .styled-input {
+            width: 100%; padding: 15px; margin: 15px 0; border: 1px solid var(--secondary-surface);
+            border-radius: 12px; background-color: var(--secondary-surface);
+            color: var(--primary-text); font-size: 16px; text-align: center; transition: box-shadow 0.3s;
+        }
+        .styled-input:focus { outline: none; box-shadow: 0 0 0 3px var(--theme-accent-glow); }
+        .btn {
+            width: 100%; padding: 15px; border: none; background: linear-gradient(45deg, var(--theme-secondary), var(--theme-primary));
+            color: white; font-size: 16px; font-weight: 600; border-radius: 12px; cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease; margin-top: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 25px var(--theme-accent-glow); }
+        .btn-secondary { background: var(--secondary-surface); }
+        .chat-container { width: 100%; height: 100%; background: var(--bg-color); display: flex; flex-direction: column; }
+        .chat-header {
+            padding: 15px 20px; background: rgba(23, 21, 59, 0.8); backdrop-filter: blur(10px);
+            display: flex; justify-content: space-between; align-items: center;
+            flex-shrink: 0; border-bottom: 1px solid var(--secondary-surface);
+        }
+        .chat-header h3 { margin: 0; font-weight: 600; }
+        .chat-header span { color: var(--theme-primary); font-weight: 700; }
+        .btn-leave { background: #c0392b; }
+        .chat-body { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+        /* --- THE PREMIUM PLAYER --- */
+        #audio-player-ui {
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px; flex-shrink: 0; display: none; text-align: center;
+            margin: 20px; border-radius: 20px;
+        }
+        .player-content { display: flex; flex-direction: column; align-items: center; }
+        #album-art {
+            width: 150px; height: 150px; border-radius: 12px;
+            object-fit: cover; box-shadow: 0 8px 25px rgba(0,0,0,0.4); margin-bottom: 20px;
+        }
+        #song-title { font-size: 22px; font-weight: 700; margin: 0; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+        #song-artist { font-size: 16px; color: var(--secondary-text); margin: 5px 0 20px 0; }
+        .progress-container { width: 100%; margin-bottom: 10px; }
+        #progress-bar {
+            -webkit-appearance: none; width: 100%; height: 6px; background: rgba(255,255,255,0.2);
+            border-radius: 5px; outline: none; cursor: pointer;
+        }
+        #progress-bar::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none; width: 18px; height: 18px;
+            background: var(--theme-secondary); border-radius: 50%;
+        }
+        .player-controls { display: flex; align-items: center; justify-content: center; width: 100%; }
+        .player-controls .btn-control {
+            background: none; border: none; color: #fff; font-size: 22px;
+            margin: 0 25px; cursor: pointer; transition: transform 0.2s ease, color 0.2s ease;
+        }
+        .player-controls .btn-control:hover { transform: scale(1.1); color: var(--theme-secondary); }
+        .player-controls .btn-main { font-size: 44px; }
+        
+        .messages-area { flex-grow: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
+        .message { padding: 12px 18px; border-radius: 20px; margin-bottom: 10px; max-width: 75%; word-wrap: break-word; line-height: 1.5; }
+        .message .sender-name { font-weight: 700; font-size: 0.9em; margin-bottom: 4px; display: block; color: var(--theme-primary); }
+        .message.sent { background: linear-gradient(45deg, var(--theme-secondary), var(--theme-primary)); color: white; align-self: flex-end; border-bottom-right-radius: 5px; }
+        .message.sent .sender-name { color: rgba(255,255,255,0.8); }
+        .message.received { background-color: var(--secondary-surface); align-self: flex-start; border-bottom-left-radius: 5px; }
+        .message.system { background: none; color: var(--secondary-text); font-style: italic; font-size: 0.9em; align-self: center; text-align: center; }
+        .message-input-form { display: flex; padding: 20px; background: var(--primary-surface); flex-shrink: 0; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 100; }
+        .modal-content { background: var(--primary-surface); padding: 25px; border-radius: 20px; width: 90%; max-width: 500px; max-height: 80vh; display: flex; flex-direction: column; border: 1px solid var(--secondary-surface); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--secondary-surface); padding-bottom: 15px; margin-bottom: 20px; }
+        .search-result-item { display: flex; align-items: center; padding: 10px; border-radius: 8px; cursor: pointer; transition: background-color 0.2s ease; }
+        .search-result-item:hover { background-color: var(--secondary-surface); }
+        .search-result-item img { width: 60px; height: 60px; border-radius: 8px; margin-right: 15px; }
+        .search-result-info h4 { margin: 0 0 5px 0; font-size: 1em; }
+        .search-result-info p { margin: 0; font-size: 0.9em; color: var(--secondary-text); }
+    </style>
+</head>
+<body>
+    <div id="youtube-player-hidden" style="position: absolute; top: -9999px; left: -9999px;"></div>
+
+    <div id="name-screen" class="screen active"> <div class="container"> <h1>PeaceNotes</h1> <p>The Premium Listening Experience</p> <input type="text" id="name-input" class="styled-input" placeholder="Your Name" autocomplete="off"> <button id="continue-button" class="btn">Enter</button> </div> </div>
+    <div id="home-screen" class="screen"> <div class="container"> <h1 id="welcome-message"></h1> <p>Create a room or enter a PIN to listen with friends.</p> <button id="create-room-button" class="btn">Create New Room</button> <p style="margin: 20px 0;">OR</p> <input type="text" id="pin-input" class="styled-input" placeholder="Enter Room PIN"> <button id="join-button" class="btn btn-secondary">Join Room</button> </div> </div>
+    <div id="chat-screen" class="screen"> <div class="chat-container"> <div class="chat-header"> <h3>Room PIN: <span id="room-pin-display"></span></h3> <button id="leave-room-button" class="btn btn-leave">Leave</button> </div> <div class="chat-body"> <div id="audio-player-ui"> <div class="player-content"> <img id="album-art" src="https://via.placeholder.com/150" alt="Album Art"> <h4 id="song-title">No music selected</h4> <p id="song-artist">Use the search button to find music</p> <div class="progress-container"> <input type="range" id="progress-bar" value="0" step="1"> </div> <div class="player-controls"> <button id="rewind-button" class="btn-control"><i class="fas fa-backward-step"></i></button> <button id="play-pause-button" class="btn-control btn-main"><i class="fas fa-play-circle"></i></button> <button id="forward-button" class="btn-control"><i class="fas fa-forward-step"></i></button> </div> </div> </div> <button id="music-search-button" class="btn" style="margin: 20px;">Search Music</button> <div class="messages-area" id="messages-area"></div> </div> <form class="message-input-form" id="message-form"> <input type="text" id="message-input" class="styled-input" placeholder="Type a message..." autocomplete="off"> <button type="submit" class="btn">Send</button> </form> </div> </div>
+    <div id="search-modal" class="modal"> <div class="modal-content"> <div class="modal-header"> <h2>Search YouTube</h2> <span class="modal-close" id="modal-close-button">×</span> </div> <div class="modal-body"> <form id="modal-search-form" style="display: flex; margin-bottom: 15px;"> <input type="text" id="modal-search-input" class="styled-input" style="margin: 0;" placeholder="Enter song or artist..."> <button type="submit" class="btn" style="width: 100px; margin-left: 10px; margin-top: 0;">Search</button> </form> <ul id="search-results"></ul> </div> </div> </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue, onDisconnect, remove, get, push, serverTimestamp, child, onChildAdded, onChildRemoved } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // --- Config and App Initialization ---
+        const YOUTUBE_API_KEY = "AIzaSyDhgutAdO7mBbxWYR-TQ_YzBFOg5ND457I"; // YOUR NEW KEY
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5QcieY9DNI1g5JFcrdOXrB_IyO9S3KGE",
+            authDomain: "peacenotes-45a1a.firebaseapp.com",
+            databaseURL: "https://peacenotes-45a1a-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "peacenotes-45a1a",
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // --- State and Element Variables ---
+        let currentRoomId, player, roomListeners = [], isSeeking = false, isPlayerReady = false, currentUserName;
+        let lastKnownState = {};
+        const userId = 'user_' + Math.random().toString(36).substr(2, 9);
+        const nameScreen = document.getElementById('name-screen'), nameInput = document.getElementById('name-input'), continueBtn = document.getElementById('continue-button'), welcomeMessage = document.getElementById('welcome-message'), homeScreen = document.getElementById('home-screen'), chatScreen = document.getElementById('chat-screen'), createRoomBtn = document.getElementById('create-room-button'), joinBtn = document.getElementById('join-button'), pinInput = document.getElementById('pin-input'), roomPinDisplay = document.getElementById('room-pin-display'), leaveRoomBtn = document.getElementById('leave-room-button'), messagesArea = document.getElementById('messages-area'), messageForm = document.getElementById('message-form'), messageInput = document.getElementById('message-input'), audioPlayerUI = document.getElementById('audio-player-ui'), albumArt = document.getElementById('album-art'), songTitle = document.getElementById('song-title'), songArtist = document.getElementById('song-artist'), playPauseBtn = document.getElementById('play-pause-button'), rewindBtn = document.getElementById('rewind-button'), forwardBtn = document.getElementById('forward-button'), progressBar = document.getElementById('progress-bar'), musicSearchBtn = document.getElementById('music-search-button'), searchModal = document.getElementById('search-modal'), modalCloseBtn = document.getElementById('modal-close-button'), modalSearchForm = document.getElementById('modal-search-form'), modalSearchInput = document.getElementById('modal-search-input'), searchResultsList = document.getElementById('search-results');
+
+        // --- Core App Logic (Name, Rooms, Chat) ---
+        continueBtn.addEventListener('click', () => { const name = nameInput.value.trim(); if (name) { currentUserName = name; welcomeMessage.textContent = `Welcome, ${currentUserName}!`; nameScreen.classList.remove('active'); homeScreen.classList.add('active'); } else { alert('Please enter your name.'); }});
+        createRoomBtn.addEventListener('click', () => joinRoom(Math.floor(100000 + Math.random() * 900000).toString()));
+        joinBtn.addEventListener('click', () => { const roomId = pinInput.value.trim(); if (roomId) joinRoom(roomId); else alert('Please enter a Room PIN.'); });
+        leaveRoomBtn.addEventListener('click', leaveRoom);
+        async function leaveRoom() { if (!currentRoomId) return; const roomRef = ref(db, `rooms/${currentRoomId}`); await remove(child(roomRef, `members/${userId}`)); const membersSnapshot = await get(child(roomRef, 'members')); if (!membersSnapshot.exists()) await remove(roomRef); roomListeners.forEach(off => off()); currentRoomId = null; if (player) player.stopVideo(); chatScreen.classList.remove('active'); homeScreen.classList.add('active'); }
+        function joinRoom(roomId) { currentRoomId = roomId; const membersRef = ref(db, `rooms/${currentRoomId}/members/${userId}`); set(membersRef, { name: currentUserName }); onDisconnect(membersRef).remove(); homeScreen.classList.remove('active'); chatScreen.classList.add('active'); roomPinDisplay.textContent = currentRoomId; messagesArea.innerHTML = ''; attachRoomListeners(); }
+        messageForm.addEventListener('submit', e => { e.preventDefault(); const text = messageInput.value.trim(); if (text && currentRoomId) set(push(ref(db, `rooms/${currentRoomId}/messages`)), { text, senderId: userId, senderName: currentUserName, timestamp: serverTimestamp() }); messageInput.value = ''; });
+        function displayMessage(msg, type) { const el = document.createElement('div'); el.classList.add('message', type); el.innerHTML = `<span class="sender-name">${type === 'sent' ? 'You' : msg.senderName}</span><div>${msg.text}</div>`; messagesArea.appendChild(el); messagesArea.scrollTop = messagesArea.scrollHeight; }
+        function displaySystemMessage(text) { const el = document.createElement('div'); el.classList.add('message', 'system'); el.textContent = text; messagesArea.appendChild(el); messagesArea.scrollTop = messagesArea.scrollHeight; }
+
+        // --- ROCK-SOLID Audio Sync Logic ---
+        function attachRoomListeners() {
+            roomListeners.forEach(off => off()); roomListeners = [];
+            const audioStateRef = ref(db, `rooms/${currentRoomId}/audioState`);
+            const messagesRef = ref(db, `rooms/${currentRoomId}/messages`);
+            const membersRef = ref(db, `rooms/${currentRoomId}/members`);
+            
+            const audioOff = onValue(audioStateRef, (snapshot) => {
+                if (!snapshot.exists()) { audioPlayerUI.style.display = 'none'; return; }
+                const state = snapshot.val();
+                lastKnownState = state;
+                syncLocalPlayerToState(state);
+            });
+            
+            const messagesOff = onChildAdded(messagesRef, (s) => displayMessage(s.val(), s.val().senderId === userId ? 'sent' : 'received'));
+            const memberJoinOff = onChildAdded(membersRef, (s) => s.key !== userId && displaySystemMessage(`${s.val().name} has joined.`));
+            const memberLeaveOff = onChildRemoved(membersRef, (s) => displaySystemMessage(`${s.val().name} has left.`));
+            roomListeners.push(audioOff, messagesOff, memberJoinOff, memberLeaveOff);
+        }
+
+        window.onYouTubeIframeAPIReady = () => player = new YT.Player('youtube-player-hidden', { events: { 'onReady': () => isPlayerReady = true }});
+
+        function syncLocalPlayerToState(state) {
+            if (!isPlayerReady || !player) return;
+            audioPlayerUI.style.display = 'block';
+            albumArt.src = state.thumbnail;
+            songTitle.textContent = state.title;
+            songArtist.textContent = state.artist;
+
+            if (player.getVideoData()?.video_id !== state.videoId) {
+                player.loadVideoById({videoId: state.videoId, startSeconds: state.timestamp});
+            } else {
+                if (Math.abs(player.getCurrentTime() - state.timestamp) > 2.5) player.seekTo(state.timestamp, true);
+            }
+
+            if (state.isPlaying && player.getPlayerState() !== YT.PlayerState.PLAYING) player.playVideo();
+            else if (!state.isPlaying && player.getPlayerState() === YT.PlayerState.PLAYING) player.pauseVideo();
+        }
+
+        // --- Controls now simply update the state in Firebase ---
+        playPauseBtn.addEventListener('click', () => { if (lastKnownState.videoId) set(ref(db, `rooms/${currentRoomId}/audioState/isPlaying`), !lastKnownState.isPlaying); });
+        rewindBtn.addEventListener('click', () => { if (lastKnownState.videoId) set(ref(db, `rooms/${currentRoomId}/audioState/timestamp`), player.getCurrentTime() - 10); });
+        forwardBtn.addEventListener('click', () => { if (lastKnownState.videoId) set(ref(db, `rooms/${currentRoomId}/audioState/timestamp`), player.getCurrentTime() + 10); });
+        progressBar.addEventListener('input', () => isSeeking = true);
+        progressBar.addEventListener('change', () => { isSeeking = false; if (lastKnownState.videoId) set(ref(db, `rooms/${currentRoomId}/audioState/timestamp`), parseFloat(progressBar.value)); });
+        
+        setInterval(() => {
+            if (player && player.getPlayerState && !isSeeking) {
+                progressBar.max = player.getDuration() || 0;
+                progressBar.value = player.getCurrentTime() || 0;
+                playPauseBtn.innerHTML = player.getPlayerState() === YT.PlayerState.PLAYING ? '<i class="fas fa-pause-circle"></i>' : '<i class="fas fa-play-circle"></i>';
+            }
+        }, 500);
+
+        // --- Search Modal & Song Selection ---
+        musicSearchBtn.addEventListener('click', () => { searchModal.style.display = 'flex'; modalSearchInput.focus(); });
+        modalCloseBtn.addEventListener('click', () => searchModal.style.display = 'none');
+        modalSearchForm.addEventListener('submit', async (e) => { e.preventDefault(); const query = modalSearchInput.value.trim(); if(query) await searchYouTube(query); });
+        
+        function selectSong(songData) {
+            searchModal.style.display = 'none';
+            const newAudioState = {
+                videoId: songData.videoId, title: songData.title, artist: songData.artist,
+                thumbnail: songData.thumbnail, isPlaying: true, timestamp: 0
+            };
+            set(ref(db, `rooms/${currentRoomId}/audioState`), newAudioState);
+        }
+
+        async function searchYouTube(query) {
+             const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&key=${YOUTUBE_API_KEY}&type=video&maxResults=5`;
+             searchResultsList.innerHTML = '<li>Searching...</li>';
+             try {
+                const response = await fetch(url);
+                const data = await response.json();
+                searchResultsList.innerHTML = '';
+                if (data.items?.length > 0) {
+                    data.items.forEach(video => {
+                        const li = document.createElement('li');
+                        li.className = 'search-result-item';
+                        li.dataset.videoId = video.id.videoId;
+                        li.dataset.title = video.snippet.title;
+                        li.dataset.artist = video.snippet.channelTitle;
+                        li.dataset.thumbnail = video.snippet.thumbnails.high.url;
+                        li.innerHTML = `<img src="${video.snippet.thumbnails.default.url}" alt="t"><div class="search-result-info"><h4>${video.snippet.title}</h4><p>${video.snippet.channelTitle}</p></div>`;
+                        li.addEventListener('click', () => selectSong(li.dataset));
+                        searchResultsList.appendChild(li);
+                    });
+                } else { searchResultsList.innerHTML = '<li>No results found.</li>'; }
+             } catch(e) { console.error(e); searchResultsList.innerHTML = '<li>Error: Could not fetch results. Check API Key quotas.</li>'; }
+        }
+        
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(tag);
+    </script>
+</body>
+</html>
