@@ -8,73 +8,90 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 
     <style>
-        /* --- $100,000 USD PREMIUM DESIGN SYSTEM --- */
-        :root {
-            --bg-color: #0d0c22; /* Deep Imperial Blue */
-            --primary-surface: #17153B; /* Dark Purple */
-            --secondary-surface: #2a2a60;
-            --primary-text: #f0f0f0;
-            --secondary-text: #a0a0c0;
-            --shadow-color: rgba(0, 0, 0, 0.5);
+        /* --- CSS Global Variables (Default: Light Mode) --- */
+        :root { /* Default is Light Mode */
+            --bg-color: #f0f2f5; /* Light gray background (whitesmoke) */
+            --primary-surface: #ffffff; /* White for cards, modals, chat header */
+            --secondary-surface: #e0e6ed; /* Lighter gray for inputs, received messages, light button background */
+            --primary-text: #1f1f1f; /* Dark text from sample.html */
+            --secondary-text: #666666; /* Medium gray secondary text */
+            --shadow-color: rgba(0, 0, 0, 0.15); /* Subtle shadow for light mode */
             
-            /* A vibrant, electric color palette */
-            --theme-primary: #6c5ce7; /* Gravity Blue */
-            --theme-secondary: #a29bfe; /* Light Gravity Blue */
-            --theme-accent-glow: rgba(108, 92, 231, 0.5);
+            --theme-primary: #007bff; /* Standard blue accent */
+            --theme-secondary: #0056b3; /* Darker blue for gradients */
+            --theme-accent-glow: rgba(0, 123, 255, 0.2); /* Blue glow */
+
+            /* Glassmorphism base colors (will be overridden in dark mode, no blur in light mode glass) */
+            --glass-bg-base: var(--primary-surface); /* Solid white for light mode "glass" */
+            --glass-border-base: var(--secondary-surface);
         }
 
-        /* NEW: Light Mode Variables */
-        body.light-mode {
-            --bg-color: #f0f2f5; /* Light Gray */
-            --primary-surface: #ffffff; /* White */
-            --secondary-surface: #e0e6ed; /* Lighter Gray for inputs/secondary backgrounds */
-            --primary-text: #333333;
-            --secondary-text: #666666;
-            --shadow-color: rgba(0, 0, 0, 0.15);
+        /* --- Dark Mode Variables (from sample.html concept) --- */
+        body[data-theme="dark"] { /* Use data-theme attribute */
+            --bg-color: #1a1a2e; /* Deep dark blue for background */
+            --primary-surface: #2c2c54; /* Slightly lighter dark blue for cards, modals, chat header */
+            --secondary-surface: #40407a; /* Even lighter dark blue for inputs, received messages */
+            --primary-text: #f0f6fc; /* Light text from sample.html */
+            --secondary-text: #b0b0d0; /* Off-white secondary text */
+            --shadow-color: rgba(0, 0, 0, 0.5); /* Strong shadow for dark mode */
             
-            --theme-primary: #3498db; /* Peter River Blue */
-            --theme-secondary: #5dade2; /* Lighter Blue */
-            --theme-accent-glow: rgba(52, 152, 219, 0.3);
+            --theme-primary: #3b82f6; /* Blue accent from sample.html (dark mode variant) */
+            --theme-secondary: #2563eb; /* Darker blue for gradients (dark mode variant) */
+            --theme-accent-glow: rgba(59, 130, 246, 0.3); /* Blue glow */
+
+            /* Glassmorphism base colors for dark mode */
+            --glass-bg-base: rgba(0, 0, 0, 0.2); /* Darker for dark mode glass */
+            --glass-border-base: rgba(255, 255, 255, 0.1);
         }
 
-        * { box-sizing: border-box; }
+        /* --- Base & Universal Styles --- */
+        * { 
+            box-sizing: border-box; 
+            /* Universal transition for smooth theme changes across all properties */
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
+        }
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg-color);
             color: var(--primary-text);
             margin: 0;
             height: 100vh;
-            overflow: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
+            overflow: hidden; /* Prevents scrollbars on body */
         }
+
+        /* --- Screen Management --- */
         .screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; justify-content: center; align-items: center; flex-direction: column;
             opacity: 0; visibility: hidden; transition: opacity 0.5s ease, visibility 0.5s ease;
         }
         .screen.active { opacity: 1; visibility: visible; }
+
+        /* --- Containers & Inputs --- */
         .container {
             background: var(--primary-surface); padding: 40px; border-radius: 20px;
             box-shadow: 0 10px 40px var(--shadow-color); text-align: center;
             width: 90%; max-width: 400px; border: 1px solid var(--secondary-surface);
-            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        h1 { font-weight: 700; margin-bottom: 10px; color: var(--primary-text); } /* Dynamic color */
+        h1 { font-weight: 700; margin-bottom: 10px; color: var(--primary-text); } 
         .container p { color: var(--secondary-text); margin-bottom: 30px; }
         .styled-input {
             width: 100%; padding: 15px; border: 1px solid var(--secondary-surface);
             border-radius: 12px; background-color: var(--secondary-surface);
-            color: var(--primary-text); font-size: 16px; text-align: center; transition: box-shadow 0.3s, background-color 0.3s, color 0.3s, border-color 0.3s;
+            color: var(--primary-text); font-size: 16px; text-align: center; 
         }
         .styled-input:focus { outline: none; box-shadow: 0 0 0 3px var(--theme-accent-glow); }
+
+        /* --- Buttons --- */
         .btn {
             width: 100%; padding: 15px; border: none; background: linear-gradient(45deg, var(--theme-secondary), var(--theme-primary));
             color: white; font-size: 16px; font-weight: 600; border-radius: 12px; cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease; 
             margin-top: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 20px var(--shadow-color);
         }
         .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 25px var(--theme-accent-glow); }
         .btn-secondary { 
@@ -85,51 +102,47 @@
         .btn-secondary:hover { 
             background: var(--secondary-surface); 
             transform: translateY(-2px); 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
-        }
-        body.light-mode .btn-secondary:hover {
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15); 
+            box-shadow: 0 2px 10px var(--shadow-color); 
         }
 
 
-        .chat-container { width: 100%; height: 100%; background: var(--bg-color); display: flex; flex-direction: column; }
+        .chat-container { 
+            width: 100%; 
+            height: 100%; 
+            background-color: var(--bg-color); /* Chat background matches body */
+            display: flex; 
+            flex-direction: column; 
+        }
         .chat-header {
-            padding: 15px 20px; background: rgba(23, 21, 59, 0.8); backdrop-filter: blur(10px);
+            padding: 15px 20px; 
+            background: var(--primary-surface); /* Uses primary surface for chat header */
+            backdrop-filter: blur(10px); 
             display: flex; justify-content: space-between; align-items: center;
             flex-shrink: 0; border-bottom: 1px solid var(--secondary-surface);
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-        }
-        body.light-mode .chat-header {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         }
 
         .chat-header h3 { margin: 0; font-weight: 600; }
         .chat-header span { color: var(--theme-primary); font-weight: 700; }
         
-        /* NEW: Leave button as icon */
         .btn-leave { 
-            background: #e74c3c; /* Red background for leave */
-            color: white; /* White icon */
-            font-size: 20px; /* Standard icon size */
-            width: 40px; /* Fixed width for circular */
-            height: 40px; /* Fixed height for circular */
-            border-radius: 50%; /* Make it circular */
-            display: flex; /* Flexbox to center icon */
+            background: #e74c3c; 
+            color: white; 
+            font-size: 20px; 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            display: flex; 
             align-items: center;
             justify-content: center;
-            margin: 0; /* Remove default margin */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2); /* Small shadow */
+            margin: 0; 
+            box-shadow: 0 2px 10px var(--shadow-color); 
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-            cursor: pointer; /* Ensure cursor is pointer */
+            cursor: pointer; 
         }
         .btn-leave:hover {
-            background: #c0392b; /* Darker red on hover */
-            transform: scale(1.05); /* Slight scale on hover */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Stronger shadow on hover */
-        }
-        body.light-mode .btn-leave {
-            /* No specific color change needed if it's always red */
+            background: #c0392b; 
+            transform: scale(1.05); 
+            box-shadow: 0 4px 15px var(--shadow-color); 
         }
 
 
@@ -138,43 +151,23 @@
             align-items: center;
             gap: 15px; 
         }
-        .header-controls .btn-control {
-            background: none;
-            border: none;
-            color: var(--primary-text); 
-            font-size: 20px;
-            cursor: pointer;
-            transition: transform 0.2s ease, color 0.2s ease;
-            padding: 5px; 
-            border-radius: 50%;
+        .header-controls .btn-control { /* For Theme and PIN visibility icons */
+            background: none; border: none; color: var(--primary-text); 
+            font-size: 20px; cursor: pointer; padding: 5px; border-radius: 50%;
         }
-        .header-controls .btn-control:hover {
-            transform: scale(1.1);
-            color: var(--theme-primary);
-        }
+        .header-controls .btn-control:hover { transform: scale(1.1); color: var(--theme-primary); }
 
-        #player-toggle-view-button {
-            display: flex;
-            align-items: center;
+        #player-toggle-view-button { /* Vibana button */
+            display: flex; align-items: center;
             background: linear-gradient(45deg, var(--theme-secondary), var(--theme-primary));
-            padding: 8px 15px;
-            border-radius: 20px; 
-            font-size: 0.9em;
-            font-weight: 600;
-            color: white;
+            padding: 8px 15px; border-radius: 20px; 
+            font-size: 0.9em; font-weight: 600; color: white;
+            box-shadow: 0 2px 10px var(--shadow-color);
+            width: auto; margin: 0; 
             transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            width: auto; 
-            margin: 0; 
         }
-        #player-toggle-view-button i {
-            margin-left: 8px; 
-            font-size: 1.1em;
-        }
-        #player-toggle-view-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px var(--theme-accent-glow);
-        }
+        #player-toggle-view-button i { margin-left: 8px; font-size: 1.1em; }
+        #player-toggle-view-button:hover { transform: translateY(-2px); box-shadow: 0 4px 15px var(--theme-accent-glow); }
 
         .chat-body { 
             flex-grow: 1; 
@@ -190,17 +183,17 @@
             left: 50%; 
             transform: translate(-50%, -50%) scale(0.8); 
             transform-origin: center center; 
-
-            background: rgba(0,0,0,0.2); 
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            
+            background: var(--glass-bg-base); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            border: 1px solid var(--glass-border-base); 
             border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.5); 
+            box-shadow: 0 8px 30px var(--shadow-color); 
             width: 90%; 
             max-width: 400px; 
             padding: 25px; 
             text-align: center;
-            z-index: 200; /* Player z-index */
+            z-index: 200; 
             
             opacity: 0; 
             pointer-events: none; 
@@ -208,10 +201,9 @@
 
             transition: opacity 0.3s ease-out, transform 0.3s ease-out; 
         }
-        body.light-mode #music-player-popup {
-            background: rgba(255, 255, 255, 0.5); 
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        /* Disable blur effect in light mode */
+        body:not([data-theme="dark"]) #music-player-popup { 
+            backdrop-filter: none; -webkit-backdrop-filter: none;
         }
 
         #music-player-popup.visible {
@@ -220,22 +212,44 @@
             pointer-events: all; 
         }
 
-        #audio-player-ui { 
-            background: none; backdrop-filter: none; -webkit-backdrop-filter: none;
-            border: none; margin: 0; border-radius: 0; padding: 0; 
-            display: block; 
+        #audio-player-ui { /* Actual player content wrapper */
+            background: none; border: none; margin: 0; border-radius: 0; padding: 0; display: block; 
         }
         .player-content { display: flex; flex-direction: column; align-items: center; }
-        #album-art {
-            width: 150px; height: 150px; border-radius: 12px;
-            object-fit: cover; box-shadow: 0 8px 25px rgba(0,0,0,0.4); margin-bottom: 20px;
+        
+        /* NEW: Album Art Placeholder / Image Container */
+        #album-art-container {
+            width: 150px;
+            height: 150px;
+            border-radius: 12px;
+            overflow: hidden; /* Ensures image/icon stays within bounds */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px var(--shadow-color);
+            margin-bottom: 20px;
+            background-color: var(--secondary-surface); /* Background for placeholder */
+            color: var(--primary-text); /* Icon color */
         }
-        #song-title { font-size: 22px; font-weight: 700; margin: 0; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+        #album-art-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures image fills the space */
+            display: none; /* Hidden by default, shown when music is playing */
+        }
+        #album-art-container .fas.fa-headphones { /* Icon style */
+            font-size: 80px; /* Large icon */
+            color: var(--secondary-text); /* Subtler color for icon */
+        }
+
+        #song-title { font-size: 22px; font-weight: 700; margin: 0; color: var(--primary-text); } 
+        body[data-theme="dark"] #song-title { text-shadow: 0 1px 3px rgba(0,0,0,0.3); } 
+        body:not([data-theme="dark"]) #song-title { text-shadow: none; } 
         #song-artist { font-size: 16px; color: var(--secondary-text); margin: 5px 0 20px 0; }
         
         .progress-container { width: 100%; margin-bottom: 10px; }
         #progress-bar {
-            -webkit-appearance: none; width: 100%; height: 6px; background: rgba(255,255,255,0.2);
+            -webkit-appearance: none; width: 100%; height: 6px; background: var(--glass-border-base); 
             border-radius: 5px; outline: none; cursor: pointer;
         }
         #progress-bar::-webkit-slider-thumb {
@@ -250,10 +264,10 @@
 
         .player-controls { display: flex; align-items: center; justify-content: center; width: 100%; }
         .player-controls .btn-control {
-            background: none; border: none; color: #fff; font-size: 22px;
-            margin: 0 25px; cursor: pointer; transition: transform 0.2s ease, color 0.2s ease;
+            background: none; border: none; color: var(--primary-text); 
+            font-size: 22px; margin: 0 25px; cursor: pointer; 
         }
-        .player-controls .btn-control:hover { transform: scale(1.1); color: var(--theme-secondary); }
+        .player-controls .btn-control:hover { transform: scale(1.1); color: var(--theme-primary); } 
         .player-controls .btn-main { font-size: 44px; }
         
         #music-search-button {
@@ -284,7 +298,6 @@
             flex-shrink: 0;
             gap: 10px; 
             align-items: center; 
-            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         .message-input-form .styled-input {
             margin: 0; 
@@ -292,12 +305,12 @@
             text-align: left; 
         }
         .message-input-form .btn {
-            width: 50px; /* Fixed width for a square/round button */
-            height: 50px; /* Fixed height for a square/round button */
-            padding: 0; /* Remove padding as width/height are fixed */
+            width: 50px; 
+            height: 50px; 
+            padding: 0; 
             margin-top: 0; 
             border-radius: 50%; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2); 
+            box-shadow: 0 2px 10px var(--shadow-color); 
             display: flex; 
             align-items: center;
             justify-content: center;
@@ -312,20 +325,24 @@
         }
         
         /* Modals (General styling applies to all modals) */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 300; } /* Adjusted z-index */
+        .modal { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); 
+            display: none; justify-content: center; align-items: center; 
+            z-index: 300; 
+        } 
         .modal-content { 
             background: var(--primary-surface); padding: 25px; border-radius: 20px; width: 90%; max-width: 500px; max-height: 80vh; 
             display: flex; flex-direction: column; border: 1px solid var(--secondary-surface);
-            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--secondary-surface); padding-bottom: 15px; margin-bottom: 20px; }
         .modal-header h2 { margin: 0; color: var(--primary-text); } 
         .modal-close { font-size: 28px; cursor: pointer; color: var(--secondary-text); }
 
         /* Search Modal Specifics */
-        .search-result-item { display: flex; align-items: center; padding: 10px; border-radius: 8px; cursor: pointer; transition: background-color 0.2s ease; }
+        .search-result-item { display: flex; align-items: center; padding: 10px; border-radius: 8px; cursor: pointer; }
         .search-result-item:hover { background-color: var(--secondary-surface); }
-        .search-result-item img { width: 60px; height: 60px; border-radius: 8px; margin-right: 15px; }
+        .search-result-item img { width: 60px; height: 60px; border-radius: 8px; margin-right: 15px; object-fit: cover; } 
         .search-result-info h4 { margin: 0 0 5px 0; font-size: 1em; color: var(--primary-text); } 
         .search-result-info p { margin: 0; font-size: 0.9em; color: var(--secondary-text); }
 
@@ -355,6 +372,77 @@
         #copy-pin-button { background: var(--secondary-surface); color: var(--primary-text); }
         #copy-pin-button:hover { background: #3a3a3a; transform: translateY(-2px); }
 
+        /* Room PIN Display (Hidden by default, shown by eye button) */
+        .room-pin-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+        }
+        .room-pin-wrapper #room-pin-display {
+            font-weight: 700;
+            color: var(--theme-primary);
+            transition: filter 0.3s ease;
+        }
+        .room-pin-wrapper #room-pin-display.hidden-pin {
+            filter: blur(5px); 
+        }
+        .room-pin-wrapper #toggle-pin-visibility-button {
+            background: none;
+            border: none;
+            color: var(--secondary-text);
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .room-pin-wrapper #toggle-pin-visibility-button:hover {
+            color: var(--theme-primary);
+        }
+
+        /* Member Count Display */
+        .member-count-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            color: var(--secondary-text); 
+            cursor: pointer; 
+            transition: color 0.2s ease;
+        }
+        .member-count-wrapper:hover {
+            color: var(--theme-primary); 
+        }
+        .member-count-wrapper i {
+            font-size: 1.1em;
+            color: var(--theme-primary); 
+        }
+
+        /* Member List Modal */
+        #member-list-modal .modal-content {
+            max-height: 60vh;
+        }
+        #member-list-modal ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto; 
+            flex-grow: 1;
+        }
+        #member-list-modal li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--secondary-surface);
+            display: flex;
+            align-items: center;
+            color: var(--primary-text);
+            font-size: 1.1em;
+        }
+        #member-list-modal li:last-child {
+            border-bottom: none;
+        }
+        #member-list-modal li i { 
+            margin-right: 10px;
+            color: var(--theme-primary);
+        }
+
     </style>
 </head>
 <body>
@@ -365,12 +453,21 @@
     <div id="chat-screen" class="screen"> 
         <div class="chat-container"> 
             <div class="chat-header"> 
-                <h3>Room PIN: <span id="room-pin-display"></span></h3> 
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="room-pin-wrapper">
+                        <h3>PIN:</h3> 
+                        <span id="room-pin-display" class="hidden-pin"></span>
+                        <button id="toggle-pin-visibility-button" class="btn-control" title="Toggle PIN Visibility"><i class="fas fa-eye"></i></button>
+                    </div>
+                    <div id="member-count-wrapper" class="member-count-wrapper" title="View Members">
+                        <i class="fas fa-users"></i>
+                        <span id="member-count-display">0</span>
+                    </div>
+                </div>
+
                 <div class="header-controls">
-                    <button id="theme-toggle-button" class="btn-control" title="Toggle Theme"><i class="fas fa-moon"></i></button>
-                    <!-- Player Toggle View Button in Header -->
+                    <button id="theme-toggle-button" class="btn-control" title="Toggle Theme"><i data-lucide="moon" class="icon"></i></button>
                     <button id="player-toggle-view-button" class="btn" title="Toggle Player View">Vibana <i class="fas fa-plus"></i></button>
-                    <!-- NEW: Leave button as icon -->
                     <button id="leave-room-button" class="btn-control btn-leave" title="Leave Room"><i class="fas fa-right-from-bracket"></i></button>
                 </div>
             </div> 
@@ -388,7 +485,11 @@
     <div id="music-player-popup"> 
         <div id="audio-player-ui"> 
             <div class="player-content"> 
-                <img id="album-art" src="https://via.placeholder.com/150" alt="Album Art"> 
+                <!-- NEW: Album Art Container with default icon -->
+                <div id="album-art-container">
+                    <img id="album-art" src="" alt="Album Art"> 
+                    <i class="fas fa-headphones"></i> <!-- Default headphone icon -->
+                </div>
                 <h4 id="song-title">No music selected</h4> 
                 <p id="song-artist">Use the search button to find music</p> 
                 <div class="progress-container"> 
@@ -459,6 +560,22 @@
         </div>
     </div>
 
+    <!-- NEW: Member List Modal -->
+    <div id="member-list-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Room Members (<span id="member-list-count">0</span>)</h2>
+                <span class="modal-close" id="member-list-close-button">×</span>
+            </div>
+            <div class="modal-body">
+                <ul id="members-list">
+                    <!-- Member names will be populated here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, set, onValue, onDisconnect, remove, get, push, serverTimestamp, child, onChildAdded, onChildRemoved } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -477,6 +594,7 @@
         // --- State and Element Variables ---
         let currentRoomId, player, roomListeners = [], isSeeking = false, isPlayerReady = false, currentUserName;
         let lastKnownState = {}; 
+        let roomMembers = {}; 
         const userId = 'user_' + Math.random().toString(36).substr(2, 9);
         const nameScreen = document.getElementById('name-screen'), nameInput = document.getElementById('name-input'), continueBtn = document.getElementById('continue-button'), welcomeMessage = document.getElementById('welcome-message'), homeScreen = document.getElementById('home-screen'), chatScreen = document.getElementById('chat-screen'), createRoomBtn = document.getElementById('create-room-button'), joinBtn = document.getElementById('join-button'), pinInput = document.getElementById('pin-input'), roomPinDisplay = document.getElementById('room-pin-display'), leaveRoomBtn = document.getElementById('leave-room-button'), messagesArea = document.getElementById('messages-area'), messageForm = document.getElementById('message-form'), messageInput = document.getElementById('message-input'), audioPlayerUI = document.getElementById('audio-player-ui'), albumArt = document.getElementById('album-art'), songTitle = document.getElementById('song-title'), songArtist = document.getElementById('song-artist'), playPauseBtn = document.getElementById('play-pause-button'), rewindBtn = document.getElementById('rewind-button'), forwardBtn = document.getElementById('forward-button'), progressBar = document.getElementById('progress-bar'), musicSearchBtn = document.getElementById('music-search-button'), searchModal = document.getElementById('search-modal'), modalCloseBtn = document.getElementById('modal-close-button'), modalSearchForm = document.getElementById('modal-search-form'), modalSearchInput = document.getElementById('modal-search-input'), searchResultsList = document.getElementById('search-results');
         
@@ -504,18 +622,50 @@
         const musicPlayerPopup = document.getElementById('music-player-popup'); 
         const playerToggleViewButton = document.getElementById('player-toggle-view-button');
         const themeToggleButton = document.getElementById('theme-toggle-button');
+        
+        const togglePinVisibilityButton = document.getElementById('toggle-pin-visibility-button');
+        let isPinVisible = false; 
+
+        const memberCountWrapper = document.getElementById('member-count-wrapper');
+        const memberCountDisplay = document.getElementById('member-count-display');
+        const memberListModal = document.getElementById('member-list-modal');
+        const memberListCount = document.getElementById('member-list-count');
+        const membersListUl = document.getElementById('members-list');
+        const memberListCloseButton = document.getElementById('member-list-close-button');
+
+        // NEW: Album art placeholder elements
+        const albumArtContainer = document.getElementById('album-art-container');
+        const albumArtImage = document.getElementById('album-art'); // Actual <img>
+        const albumArtIcon = albumArtContainer.querySelector('.fa-headphones'); // The <i> icon
 
 
         let currentFileUrl = window.location.origin + window.location.pathname;
 
-        // --- Helper for Alphanumeric Code Generation ---
+        // --- Helper for Alphanumeric Code Generation (GUARANTEED) ---
         function generateAlphanumericCode(length) {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let result = '';
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const nums = '0123456789';
+            const allChars = chars + nums;
+            let result = Array(length).fill('');
+            let hasLetter = false;
+            let hasNumber = false;
+
             for (let i = 0; i < length; i++) {
-                result += characters.charAt(Math.floor(Math.random() * characters.length));
+                result[i] = allChars.charAt(Math.floor(Math.random() * allChars.length));
+                if (chars.includes(result[i])) hasLetter = true;
+                if (nums.includes(result[i])) hasNumber = true;
             }
-            return result;
+
+            if (!hasLetter) {
+                const randomIndex = Math.floor(Math.random() * length);
+                result[randomIndex] = chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            if (!hasNumber) {
+                const randomIndex = Math.floor(Math.random() * length);
+                result[randomIndex] = nums.charAt(Math.floor(Math.random() * nums.length));
+            }
+            
+            return result.join('');
         }
 
         // --- Custom Alert Function ---
@@ -527,31 +677,29 @@
         customAlertCloseBtn.addEventListener('click', () => customAlertModal.style.display = 'none');
 
 
-        // --- Theme Toggle Function ---
+        // --- Theme Toggle Function (from sample.html) ---
         function toggleTheme() {
-            const htmlElement = document.documentElement; 
-            if (htmlElement.classList.contains('light-mode')) {
-                htmlElement.classList.remove('light-mode');
-                themeToggleButton.innerHTML = '<i class="fas fa-moon"></i>';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                htmlElement.classList.add('light-mode');
-                themeToggleButton.innerHTML = '<i class="fas fa-sun"></i>';
-                localStorage.setItem('theme', 'light');
-            }
+            const bodyElement = document.body; 
+            const currentTheme = bodyElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            bodyElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme); 
         }
+
+        function updateThemeIcon(theme) {
+            themeToggleButton.innerHTML = theme === 'dark' ? '<i data-lucide="sun" class="icon"></i>' : '<i data-lucide="moon" class="icon"></i>';
+            lucide.createIcons(); 
+        }
+
         themeToggleButton.addEventListener('click', toggleTheme);
 
-        // Apply saved theme on load
+        // Apply saved theme on load (from sample.html)
         document.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                document.documentElement.classList.add('light-mode');
-                themeToggleButton.innerHTML = '<i class="fas fa-sun"></i>';
-            } else { 
-                document.documentElement.classList.remove('light-mode');
-                themeToggleButton.innerHTML = '<i class="fas fa-moon"></i>';
-            }
+            const initialTheme = savedTheme || 'light'; 
+            document.body.setAttribute('data-theme', initialTheme);
+            updateThemeIcon(initialTheme); 
         });
 
 
@@ -633,22 +781,21 @@
             chatScreen.classList.remove('active');
             homeScreen.classList.add('active');
             messagesArea.innerHTML = '';
-            // Hide and reset player popup when leaving room
-            musicPlayerPopup.classList.remove('visible'); // Hide the popup
-            setTimeout(() => musicPlayerPopup.style.display = 'none', 300); // Allow transition to complete
+            musicPlayerPopup.classList.remove('visible'); 
+            setTimeout(() => musicPlayerPopup.style.display = 'none', 300); 
             currentTimeDisplay.textContent = "00:00";
             totalDurationDisplay.textContent = "00:00";
             progressBar.value = 0;
             songTitle.textContent = "No music selected";
             songArtist.textContent = "Use the search button to find music";
-            playerToggleViewButton.innerHTML = 'Vibana <i class="fas fa-plus"></i>'; // Reset player view button text/icon
+            playerToggleViewButton.innerHTML = 'Vibana <i class="fas fa-plus"></i>'; 
 
             deleteRoomModal.style.display = 'none'; 
         }
 
         deleteModalCloseBtn.addEventListener('click', () => { deleteRoomModal.style.display = 'none'; });
         confirmDeleteButton.addEventListener('click', () => { executeLeaveAndDeletion(true); });
-        cancelDeleteButton.addEventListener('click', () => { deleteRoomModal.style.display = 'none'; /* User stays in room*/ });
+        cancelDeleteButton.addEventListener('click', () => { deleteRoomModal.style.display = 'none'; });
 
         async function joinRoom(roomId, isNewRoom = false) {
             let roomExists = (await get(ref(db, `rooms/${roomId}`))).exists();
@@ -668,7 +815,11 @@
             onDisconnect(membersRef).remove();
             homeScreen.classList.remove('active');
             chatScreen.classList.add('active');
-            roomPinDisplay.textContent = currentRoomId;
+            
+            roomPinDisplay.textContent = currentRoomId; 
+            roomPinDisplay.classList.add('hidden-pin'); 
+            togglePinVisibilityButton.innerHTML = '<i class="fas fa-eye"></i>'; 
+
             messagesArea.innerHTML = '';
             attachRoomListeners();
 
@@ -680,6 +831,33 @@
         function displayMessage(msg, type) { const el = document.createElement('div'); el.classList.add('message', type); el.innerHTML = `<span class="sender-name">${type === 'sent' ? 'You' : msg.senderName}</span><div>${msg.text}</div>`; messagesArea.appendChild(el); messagesArea.scrollTop = messagesArea.scrollHeight; }
         function displaySystemMessage(text) { const el = document.createElement('div'); el.classList.add('message', 'system'); el.textContent = text; messagesArea.appendChild(el); messagesArea.scrollTop = messagesArea.scrollHeight; }
 
+        // --- Room PIN Visibility Toggle ---
+        togglePinVisibilityButton.addEventListener('click', () => {
+            isPinVisible = !isPinVisible;
+            if (isPinVisible) {
+                roomPinDisplay.classList.remove('hidden-pin');
+                togglePinVisibilityButton.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                roomPinDisplay.classList.add('hidden-pin');
+                togglePinVisibilityButton.innerHTML = '<i class="fas fa-eye"></i>';
+            }
+        });
+
+        // --- Member List Display Logic ---
+        memberCountWrapper.addEventListener('click', () => {
+            membersListUl.innerHTML = ''; 
+            for (const memberId in roomMembers) {
+                const memberName = roomMembers[memberId].name;
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="fas fa-user-circle"></i> ${memberName} ${memberId === userId ? '(You)' : ''}`;
+                membersListUl.appendChild(li);
+            }
+            memberListCount.textContent = Object.keys(roomMembers).length;
+            memberListModal.style.display = 'flex';
+        });
+        memberListCloseButton.addEventListener('click', () => memberListModal.style.display = 'none');
+
+
         // --- ROCK-SOLID Audio Sync Logic ---
         function attachRoomListeners() {
             roomListeners.forEach(off => off()); roomListeners = [];
@@ -689,17 +867,17 @@
             
             const audioOff = onValue(audioStateRef, (snapshot) => {
                 if (!snapshot.exists()) { 
-                    musicPlayerPopup.classList.remove('visible'); // Hide popup
-                    setTimeout(() => musicPlayerPopup.style.display = 'none', 300); // After transition
+                    musicPlayerPopup.classList.remove('visible'); 
+                    setTimeout(() => musicPlayerPopup.style.display = 'none', 300); 
+                    updatePlayerUIForNoMusic(); // Reset UI to no-music state
                     return; 
                 }
                 
                 const state = snapshot.val();
                 lastKnownState = state; 
                 
-                // Show the popup when music state exists
                 musicPlayerPopup.style.display = 'block';
-                setTimeout(() => musicPlayerPopup.classList.add('visible'), 10); // Trigger transition
+                setTimeout(() => musicPlayerPopup.classList.add('visible'), 10); 
 
                 if (isPlayerReady) { 
                     if (state.lastUpdatedBy === userId) {
@@ -709,14 +887,26 @@
                         updatePlayerUI(state); 
                     }
                 } else {
-                    updatePlayerUI(state); // Update UI even if player not ready, data exists
+                    updatePlayerUI(state); 
                 }
             });
             
             const messagesOff = onChildAdded(messagesRef, (s) => displayMessage(s.val(), s.val().senderId === userId ? 'sent' : 'received'));
-            const memberJoinOff = onChildAdded(membersRef, (s) => s.key !== userId && displaySystemMessage(`${s.val().name} has joined.`));
-            const memberLeaveOff = onChildRemoved(membersRef, (s) => displaySystemMessage(`${s.val().name} has left.`));
-            roomListeners.push(audioOff, messagesOff, memberJoinOff, memberLeaveOff);
+            
+            const membersOverallOff = onValue(membersRef, (snapshot) => {
+                roomMembers = {}; 
+                if (snapshot.exists()) {
+                    snapshot.forEach(childSnapshot => {
+                        roomMembers[childSnapshot.key] = childSnapshot.val();
+                    });
+                }
+                memberCountDisplay.textContent = Object.keys(roomMembers).length;
+                if (memberListModal.style.display === 'flex') {
+                    memberCountWrapper.click(); 
+                }
+            });
+
+            roomListeners.push(audioOff, messagesOff, membersOverallOff);
         }
 
         window.onYouTubeIframeAPIReady = () => player = new YT.Player('youtube-player-hidden', { events: { 'onReady': onPlayerReady }});
@@ -726,16 +916,39 @@
             if (Object.keys(lastKnownState).length > 0) { 
                 syncLocalPlayerToState(lastKnownState);
                 updatePlayerUI(lastKnownState); 
+            } else {
+                updatePlayerUIForNoMusic(); // Set initial no-music state if no last state
             }
         }
 
         function updatePlayerUI(state) {
-            albumArt.src = state.thumbnail;
+            // Show album art image, hide icon
+            albumArtImage.src = state.thumbnail;
+            albumArtImage.style.display = 'block';
+            albumArtIcon.style.display = 'none';
+
             songTitle.textContent = state.title;
             songArtist.textContent = state.artist;
             
             playPauseBtn.innerHTML = state.isPlaying ? '<i class="fas fa-pause-circle"></i>' : '<i class="fas fa-play-circle"></i>';
         }
+
+        // NEW: Function to reset player UI to no-music state
+        function updatePlayerUIForNoMusic() {
+            albumArtImage.style.display = 'none';
+            albumArtIcon.style.display = 'block'; // Show icon
+
+            songTitle.textContent = "No music selected";
+            songArtist.textContent = "Use the search button to find music";
+            
+            // Reset times and progress bar
+            currentTimeDisplay.textContent = "00:00";
+            totalDurationDisplay.textContent = "00:00";
+            progressBar.value = 0;
+            progressBar.max = 0;
+            playPauseBtn.innerHTML = '<i class="fas fa-play-circle"></i>'; // Default play icon
+        }
+
 
         function syncLocalPlayerToState(state) {
             if (!isPlayerReady || !player) return;
@@ -937,15 +1150,13 @@
 
         function togglePlayerPopup() {
             if (musicPlayerPopup.classList.contains('visible')) {
-                // Hide (minimize)
                 musicPlayerPopup.classList.remove('visible');
-                setTimeout(() => musicPlayerPopup.style.display = 'none', 300); // Hide completely after transition
-                playerToggleViewButton.innerHTML = 'Vibana <i class="fas fa-plus"></i>'; // Update button text/icon
+                setTimeout(() => musicPlayerPopup.style.display = 'none', 300); 
+                playerToggleViewButton.innerHTML = 'Vibana <i class="fas fa-plus"></i>'; 
             } else {
-                // Show (maximize)
                 musicPlayerPopup.style.display = 'block';
-                setTimeout(() => musicPlayerPopup.classList.add('visible'), 10); // Show and trigger transition
-                playerToggleViewButton.innerHTML = 'Vibana <i class="fas fa-minus"></i>'; // Update button text/icon
+                setTimeout(() => musicPlayerPopup.classList.add('visible'), 10); 
+                playerToggleViewButton.innerHTML = 'Vibana <i class="fas fa-minus"></i>'; 
             }
         }
 
