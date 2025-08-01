@@ -13,44 +13,41 @@
     <style>
         /* --- CSS Global Variables (Default: Light Mode) --- */
         :root { /* Default is Light Mode */
-            --bg-color: #f0f2f5; /* Light gray background (whitesmoke) */
-            --primary-surface: #ffffff; /* White for cards, modals, chat header */
-            --secondary-surface: #e0e6ed; /* Lighter gray for inputs, received messages, light button background */
-            --primary-text: #1f1f1f; /* Dark text from sample.html */
-            --secondary-text: #666666; /* Medium gray secondary text */
-            --shadow-color: rgba(0, 0, 0, 0.15); /* Subtle shadow for light mode */
+            --bg-color: #f0f2f5; 
+            --primary-surface: #ffffff; 
+            --secondary-surface: #e0e6ed; 
+            --primary-text: #1f1f1f; 
+            --secondary-text: #666666; 
+            --shadow-color: rgba(0, 0, 0, 0.15); 
             
-            --theme-primary: #007bff; /* Standard blue accent */
-            --theme-secondary: #0056b3; /* Darker blue for gradients */
-            --theme-accent-glow: rgba(0, 123, 255, 0.2); /* Blue glow */
+            --theme-primary: #007bff; 
+            --theme-secondary: #0056b3; 
+            --theme-accent-glow: rgba(0, 123, 255, 0.2); 
 
-            /* Glassmorphism base colors (will be overridden in dark mode, no blur in light mode glass) */
-            --glass-bg-base: var(--primary-surface); /* Solid white for light mode "glass" */
+            --glass-bg-base: var(--primary-surface); 
             --glass-border-base: var(--secondary-surface);
         }
 
         /* --- Dark Mode Variables (from sample.html concept) --- */
         body[data-theme="dark"] { /* Use data-theme attribute */
-            --bg-color: #1a1a2e; /* Deep dark blue for background */
-            --primary-surface: #2c2c54; /* Slightly lighter dark blue for cards, modals, chat header */
-            --secondary-surface: #40407a; /* Even lighter dark blue for inputs, received messages */
-            --primary-text: #f0f6fc; /* Light text from sample.html */
-            --secondary-text: #b0b0d0; /* Off-white secondary text */
-            --shadow-color: rgba(0, 0, 0, 0.5); /* Strong shadow for dark mode */
+            --bg-color: #1a1a2e; 
+            --primary-surface: #2c2c54; 
+            --secondary-surface: #40407a; 
+            --primary-text: #f0f6fc; 
+            --secondary-text: #b0b0d0; 
+            --shadow-color: rgba(0, 0, 0, 0.5); 
             
-            --theme-primary: #3b82f6; /* Blue accent from sample.html (dark mode variant) */
-            --theme-secondary: #2563eb; /* Darker blue for gradients (dark mode variant) */
-            --theme-accent-glow: rgba(59, 130, 246, 0.3); /* Blue glow */
+            --theme-primary: #3b82f6; 
+            --theme-secondary: #2563eb; 
+            --theme-accent-glow: rgba(59, 130, 246, 0.3); 
 
-            /* Glassmorphism base colors for dark mode */
-            --glass-bg-base: rgba(0, 0, 0, 0.2); /* Darker for dark mode glass */
+            --glass-bg-base: rgba(0, 0, 0, 0.2); 
             --glass-border-base: rgba(255, 255, 255, 0.1);
         }
 
         /* --- Base & Universal Styles --- */
         * { 
             box-sizing: border-box; 
-            /* Universal transition for smooth theme changes across all properties */
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
         }
         body {
@@ -59,7 +56,7 @@
             color: var(--primary-text);
             margin: 0;
             height: 100vh;
-            overflow: hidden; /* Prevents scrollbars on body */
+            overflow: hidden; 
         }
 
         /* --- Screen Management --- */
@@ -89,7 +86,7 @@
         .btn {
             width: 100%; padding: 15px; border: none; background: linear-gradient(45deg, var(--theme-secondary), var(--theme-primary));
             color: white; font-size: 16px; font-weight: 600; border-radius: 12px; cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease; 
+            transition: transform 0.2s ease, box-shadow 0.2s ease; 
             margin-top: 10px;
             box-shadow: 0 4px 20px var(--shadow-color);
         }
@@ -109,13 +106,13 @@
         .chat-container { 
             width: 100%; 
             height: 100%; 
-            background-color: var(--bg-color); /* Chat background matches body */
+            background-color: var(--bg-color); 
             display: flex; 
             flex-direction: column; 
         }
         .chat-header {
             padding: 15px 20px; 
-            background: var(--primary-surface); /* Uses primary surface for chat header */
+            background: var(--primary-surface); 
             backdrop-filter: blur(10px); 
             display: flex; justify-content: space-between; align-items: center;
             flex-shrink: 0; border-bottom: 1px solid var(--secondary-surface);
@@ -136,7 +133,7 @@
             justify-content: center;
             margin: 0; 
             box-shadow: 0 2px 10px var(--shadow-color); 
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             cursor: pointer; 
         }
         .btn-leave:hover {
@@ -151,13 +148,13 @@
             align-items: center;
             gap: 15px; 
         }
-        .header-controls .btn-control { /* For Theme and PIN visibility icons */
+        .header-controls .btn-control { 
             background: none; border: none; color: var(--primary-text); 
             font-size: 20px; cursor: pointer; padding: 5px; border-radius: 50%;
         }
         .header-controls .btn-control:hover { transform: scale(1.1); color: var(--theme-primary); }
 
-        #player-toggle-view-button { /* Vibana button */
+        #player-toggle-view-button { 
             display: flex; align-items: center;
             background: linear-gradient(45deg, var(--theme-secondary), var(--theme-primary));
             padding: 8px 15px; border-radius: 20px; 
@@ -175,6 +172,38 @@
             flex-direction: column; 
             overflow: hidden; 
         }
+
+        /* E2E Notice */
+        #e2e-notice {
+            background-color: var(--secondary-surface); 
+            color: var(--primary-text);
+            font-size: 0.85em; 
+            text-align: center;
+            padding: 15px;
+            width: 80%; 
+            margin: 20px auto; 
+            border-radius: 12px;
+            box-shadow: 0 2px 10px var(--shadow-color);
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            gap: 10px;
+            opacity: 1;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: translateY(0);
+        }
+        #e2e-notice.hidden {
+            opacity: 0;
+            transform: translateY(-20px);
+            pointer-events: none;
+            display: none; 
+        }
+        #e2e-notice i {
+            color: var(--theme-primary); 
+            font-size: 1em; 
+            margin-right: 8px; 
+        }
+
 
         /* --- THE PREMIUM FLOATING PLAYER POPUP --- */
         #music-player-popup {
@@ -212,34 +241,26 @@
             pointer-events: all; 
         }
 
-        #audio-player-ui { /* Actual player content wrapper */
+        #audio-player-ui { 
             background: none; border: none; margin: 0; border-radius: 0; padding: 0; display: block; 
         }
         .player-content { display: flex; flex-direction: column; align-items: center; }
         
-        /* NEW: Album Art Placeholder / Image Container */
+        /* Album Art Container with default icon */
         #album-art-container {
-            width: 150px;
-            height: 150px;
-            border-radius: 12px;
-            overflow: hidden; /* Ensures image/icon stays within bounds */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 25px var(--shadow-color);
-            margin-bottom: 20px;
-            background-color: var(--secondary-surface); /* Background for placeholder */
-            color: var(--primary-text); /* Icon color */
+            width: 150px; height: 150px; border-radius: 12px; overflow: hidden; 
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 25px var(--shadow-color); margin-bottom: 20px;
+            background-color: var(--secondary-surface); 
+            color: var(--primary-text); 
         }
         #album-art-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Ensures image fills the space */
-            display: none; /* Hidden by default, shown when music is playing */
+            width: 100%; height: 100%; object-fit: cover; 
+            display: none; 
         }
-        #album-art-container .fas.fa-headphones { /* Icon style */
-            font-size: 80px; /* Large icon */
-            color: var(--secondary-text); /* Subtler color for icon */
+        #album-art-container .fas.fa-headphones { 
+            font-size: 80px; 
+            color: var(--secondary-text); 
         }
 
         #song-title { font-size: 22px; font-weight: 700; margin: 0; color: var(--primary-text); } 
@@ -262,7 +283,10 @@
             font-size: 0.85em; margin-top: 5px;
         }
 
-        .player-controls { display: flex; align-items: center; justify-content: center; width: 100%; }
+        .player-controls { 
+            display: flex; align-items: center; justify-content: center; width: 100%; 
+            margin-bottom: 15px; 
+        }
         .player-controls .btn-control {
             background: none; border: none; color: var(--primary-text); 
             font-size: 22px; margin: 0 25px; cursor: pointer; 
@@ -304,9 +328,24 @@
             flex-grow: 1; 
             text-align: left; 
         }
-        .message-input-form .btn {
-            width: 50px; 
-            height: 50px; 
+        #emoji-button {
+            width: 40px; height: 40px; 
+            padding: 0; border: none; background: none;
+            color: var(--secondary-text); 
+            font-size: 20px; 
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+        #emoji-button:hover {
+            color: var(--theme-primary);
+            transform: scale(1.1);
+        }
+
+        .message-input-form .send-btn { 
+            width: 40px; 
+            height: 40px; 
             padding: 0; 
             margin-top: 0; 
             border-radius: 50%; 
@@ -314,12 +353,14 @@
             display: flex; 
             align-items: center;
             justify-content: center;
+            background: linear-gradient(45deg, var(--theme-secondary), var(--theme-primary)); 
+            color: white; 
         }
-        .message-input-form .btn i {
+        .message-input-form .send-btn i {
             margin: 0; 
-            font-size: 1.2em; 
+            font-size: 1.1em; 
         }
-        .message-input-form .btn:hover {
+        .message-input-form .send-btn:hover {
             transform: translateY(-1px); 
             box-shadow: 0 3px 12px var(--theme-accent-glow);
         }
@@ -356,7 +397,18 @@
         #custom-alert-modal .modal-header { justify-content: center; border-bottom: none; padding-bottom: 0; margin-bottom: 15px; }
         #custom-alert-modal .modal-header h2 { font-size: 1.5em; }
         #custom-alert-modal .modal-body { margin-top: 10px; }
-        #custom-alert-modal .modal-body .btn { width: auto; padding: 10px 30px; margin-top: 20px; }
+        /* Button wrapper for custom alert single button */
+        .modal-button-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px; /* Space above buttons */
+            gap: 10px; /* Space between multiple buttons */
+        }
+        .modal-button-wrapper .btn {
+            width: auto; /* Override 100% width */
+            padding: 10px 30px;
+            margin: 0; /* Remove default margin-top */
+        }
 
         /* Share Room Modal Styling */
         #share-room-modal .modal-body { text-align: center; }
@@ -442,6 +494,50 @@
             margin-right: 10px;
             color: var(--theme-primary);
         }
+        /* Kick button in member list */
+        .member-list-modal .kick-btn {
+            background: none;
+            border: none;
+            color: #e74c3c; 
+            font-size: 1.2em;
+            margin-left: auto; 
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            padding: 5px;
+        }
+        .member-list-modal .kick-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Emoji Modal */
+        #emoji-modal .modal-content {
+            max-width: 350px;
+            max-height: 350px;
+            padding: 15px;
+        }
+        #emoji-modal .modal-header {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 10px;
+        }
+        #emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 5px;
+            overflow-y: auto;
+            flex-grow: 1;
+            padding-right: 5px; 
+        }
+        .emoji-item {
+            font-size: 28px;
+            cursor: pointer;
+            text-align: center;
+            padding: 5px;
+            border-radius: 8px;
+        }
+        .emoji-item:hover {
+            background-color: var(--secondary-surface);
+        }
 
     </style>
 </head>
@@ -472,11 +568,16 @@
                 </div>
             </div> 
             <div class="chat-body"> 
+                <div id="e2e-notice">
+                    <i class="fas fa-lock"></i> 
+                    Messages are end-to-end encrypted. No one outside of this chat, not even PeaceNotes, can read them.
+                </div>
                 <div class="messages-area" id="messages-area"></div> 
             </div> 
             <form class="message-input-form" id="message-form"> 
+                <button type="button" id="emoji-button"><i class="far fa-smile"></i></button> 
                 <input type="text" id="message-input" class="styled-input" placeholder="Type a message..." autocomplete="off"> 
-                <button type="submit" class="btn"><i class="fas fa-paper-plane"></i></button> 
+                <button type="submit" class="send-btn"><i class="fas fa-paper-plane"></i></button> 
             </form> 
         </div> 
     </div>
@@ -485,10 +586,9 @@
     <div id="music-player-popup"> 
         <div id="audio-player-ui"> 
             <div class="player-content"> 
-                <!-- NEW: Album Art Container with default icon -->
                 <div id="album-art-container">
                     <img id="album-art" src="" alt="Album Art"> 
-                    <i class="fas fa-headphones"></i> <!-- Default headphone icon -->
+                    <i class="fas fa-headphones"></i> 
                 </div>
                 <h4 id="song-title">No music selected</h4> 
                 <p id="song-artist">Use the search button to find music</p> 
@@ -504,6 +604,11 @@
                     <button id="play-pause-button" class="btn-control btn-main"><i class="fas fa-play-circle"></i></button> 
                     <button id="forward-button" class="btn-control"><i class="fas fa-forward-step"></i></button> 
                 </div> 
+                <div class="aux-player-controls">
+                    <button id="mute-button" class="btn-control" title="Mute/Unmute"><i class="fas fa-volume-up"></i></button>
+                    <input type="range" id="volume-slider" class="volume-slider" min="0" max="100" value="100">
+                    <button id="repeat-button" class="btn-control" title="Toggle Repeat"><i class="fas fa-redo"></i></button>
+                </div>
             </div> 
         </div> 
         <button id="music-search-button" class="btn">Search Music</button> 
@@ -534,7 +639,9 @@
             </div>
             <div class="modal-body">
                 <p id="custom-alert-message">This is a custom alert message.</p>
-                <button id="custom-alert-close-button" class="btn">OK</button>
+                <div class="modal-button-wrapper"> <!-- NEW: Button wrapper for custom alert buttons -->
+                    <button id="custom-alert-close-button" class="btn">OK</button>
+                </div>
             </div>
         </div>
     </div>
@@ -560,7 +667,7 @@
         </div>
     </div>
 
-    <!-- NEW: Member List Modal -->
+    <!-- Member List Modal -->
     <div id="member-list-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -575,13 +682,28 @@
         </div>
     </div>
 
+    <!-- Emoji Modal -->
+    <div id="emoji-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Choose Emoji</h2>
+                <span class="modal-close" id="emoji-modal-close-button">×</span>
+            </div>
+            <div class="modal-body">
+                <div id="emoji-grid">
+                    <!-- Emojis will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, set, onValue, onDisconnect, remove, get, push, serverTimestamp, child, onChildAdded, onChildRemoved } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         // --- Config and App Initialization ---
-        const YOUTUBE_API_KEY = "AIzaSyDhgutAdO7mBbxWYR-TQ_YzBFOg5ND457I"; // YOUR NEW KEY
+        const YOUTUBE_API_KEY = "AIzaSyDhgutAdO7mBbxWYR-TQ_YzBFOg5ND457I"; 
         const firebaseConfig = {
             apiKey: "AIzaSyA5QcieY9DNI1g5JFcrdOXrB_IyO9S3KGE",
             authDomain: "peacenotes-45a1a.firebaseapp.com",
@@ -595,6 +717,10 @@
         let currentRoomId, player, roomListeners = [], isSeeking = false, isPlayerReady = false, currentUserName;
         let lastKnownState = {}; 
         let roomMembers = {}; 
+        let roomCreatorId = null; 
+        let currentVolume = 100;
+        let isMuted = false; 
+        let isRepeatOn = false; 
         const userId = 'user_' + Math.random().toString(36).substr(2, 9);
         const nameScreen = document.getElementById('name-screen'), nameInput = document.getElementById('name-input'), continueBtn = document.getElementById('continue-button'), welcomeMessage = document.getElementById('welcome-message'), homeScreen = document.getElementById('home-screen'), chatScreen = document.getElementById('chat-screen'), createRoomBtn = document.getElementById('create-room-button'), joinBtn = document.getElementById('join-button'), pinInput = document.getElementById('pin-input'), roomPinDisplay = document.getElementById('room-pin-display'), leaveRoomBtn = document.getElementById('leave-room-button'), messagesArea = document.getElementById('messages-area'), messageForm = document.getElementById('message-form'), messageInput = document.getElementById('message-input'), audioPlayerUI = document.getElementById('audio-player-ui'), albumArt = document.getElementById('album-art'), songTitle = document.getElementById('song-title'), songArtist = document.getElementById('song-artist'), playPauseBtn = document.getElementById('play-pause-button'), rewindBtn = document.getElementById('rewind-button'), forwardBtn = document.getElementById('forward-button'), progressBar = document.getElementById('progress-bar'), musicSearchBtn = document.getElementById('music-search-button'), searchModal = document.getElementById('search-modal'), modalCloseBtn = document.getElementById('modal-close-button'), modalSearchForm = document.getElementById('modal-search-form'), modalSearchInput = document.getElementById('modal-search-input'), searchResultsList = document.getElementById('search-results');
         
@@ -633,10 +759,19 @@
         const membersListUl = document.getElementById('members-list');
         const memberListCloseButton = document.getElementById('member-list-close-button');
 
-        // NEW: Album art placeholder elements
         const albumArtContainer = document.getElementById('album-art-container');
-        const albumArtImage = document.getElementById('album-art'); // Actual <img>
-        const albumArtIcon = albumArtContainer.querySelector('.fa-headphones'); // The <i> icon
+        const albumArtImage = document.getElementById('album-art');
+        const albumArtIcon = albumArtContainer.querySelector('.fa-headphones'); 
+
+        const volumeSlider = document.getElementById('volume-slider');
+        const muteButton = document.getElementById('mute-button');
+        const repeatButton = document.getElementById('repeat-button');
+
+        const emojiButton = document.getElementById('emoji-button');
+        const emojiModal = document.getElementById('emoji-modal');
+        const emojiModalCloseButton = document.getElementById('emoji-modal-close-button');
+        const emojiGrid = document.getElementById('emoji-grid');
+        const e2eNotice = document.getElementById('e2e-notice');
 
 
         let currentFileUrl = window.location.origin + window.location.pathname;
@@ -673,6 +808,26 @@
             customAlertTitle.textContent = title;
             customAlertMessage.textContent = message;
             customAlertModal.style.display = 'flex';
+            
+            // Clear any old custom buttons or wrapper
+            const oldButtonWrapper = customAlertModal.querySelector('.modal-button-wrapper');
+            if(oldButtonWrapper) oldButtonWrapper.remove();
+
+            // Always ensure the default OK button exists and is inside a wrapper for centering
+            let buttonWrapper = document.createElement('div');
+            buttonWrapper.classList.add('modal-button-wrapper');
+            
+            // If it's the standard alert, add the OK button.
+            // If it's a custom confirm, the custom logic will add its own buttons.
+            if (!customAlertModal.querySelector('#custom-alert-close-button')) { // Only add if not already there (prevents duplicates)
+                customAlertCloseBtn.style.display = 'block'; // Ensure it's visible if it was hidden
+                buttonWrapper.appendChild(customAlertCloseBtn);
+            } else {
+                 // The custom button logic will hide this or replace it.
+                 // For now, if it exists, assume it will be handled by custom logic or is the single OK.
+            }
+
+            customAlertModal.querySelector('.modal-body').appendChild(buttonWrapper);
         }
         customAlertCloseBtn.addEventListener('click', () => customAlertModal.style.display = 'none');
 
@@ -812,6 +967,9 @@
             currentRoomId = roomId;
             const membersRef = ref(db, `rooms/${currentRoomId}/members/${userId}`);
             set(membersRef, { name: currentUserName });
+            if (isNewRoom) {
+                set(child(ref(db, `rooms/${currentRoomId}`), 'creatorId'), userId);
+            }
             onDisconnect(membersRef).remove();
             homeScreen.classList.remove('active');
             chatScreen.classList.add('active');
@@ -821,13 +979,19 @@
             togglePinVisibilityButton.innerHTML = '<i class="fas fa-eye"></i>'; 
 
             messagesArea.innerHTML = '';
+            e2eNotice.classList.remove('hidden'); 
+
             attachRoomListeners();
 
             if (isNewRoom) {
                 showRoomCreatedModal(roomId); 
             }
         }
-        messageForm.addEventListener('submit', e => { e.preventDefault(); const text = messageInput.value.trim(); if (text && currentRoomId) set(push(ref(db, `rooms/${currentRoomId}/messages`)), { text, senderId: userId, senderName: currentUserName, timestamp: serverTimestamp() }); messageInput.value = ''; });
+        messageForm.addEventListener('submit', e => { e.preventDefault(); const text = messageInput.value.trim(); if (text && currentRoomId) {
+            set(push(ref(db, `rooms/${currentRoomId}/messages`)), { text, senderId: userId, senderName: currentUserName, timestamp: serverTimestamp() }); 
+            messageInput.value = '';
+            e2eNotice.classList.add('hidden');
+        }});
         function displayMessage(msg, type) { const el = document.createElement('div'); el.classList.add('message', type); el.innerHTML = `<span class="sender-name">${type === 'sent' ? 'You' : msg.senderName}</span><div>${msg.text}</div>`; messagesArea.appendChild(el); messagesArea.scrollTop = messagesArea.scrollHeight; }
         function displaySystemMessage(text) { const el = document.createElement('div'); el.classList.add('message', 'system'); el.textContent = text; messagesArea.appendChild(el); messagesArea.scrollTop = messagesArea.scrollHeight; }
 
@@ -850,6 +1014,54 @@
                 const memberName = roomMembers[memberId].name;
                 const li = document.createElement('li');
                 li.innerHTML = `<i class="fas fa-user-circle"></i> ${memberName} ${memberId === userId ? '(You)' : ''}`;
+                
+                if (userId === roomCreatorId && memberId !== userId) {
+                    const kickBtn = document.createElement('button');
+                    kickBtn.classList.add('kick-btn');
+                    kickBtn.innerHTML = '<i class="fas fa-user-minus"></i>';
+                    kickBtn.title = `Kick ${memberName}`;
+                    kickBtn.addEventListener('click', async () => {
+                        memberListModal.style.display = 'none'; 
+                        
+                        // Use showCustomAlert for confirmation
+                        showCustomAlert('Confirm Kick', `Are you sure you want to kick ${memberName} from the room?`);
+                        
+                        // Get the newly created button wrapper from showCustomAlert
+                        const alertButtonWrapper = customAlertModal.querySelector('.modal-button-wrapper');
+                        
+                        // Remove the default 'OK' button from the alert
+                        const defaultOkBtn = customAlertModal.querySelector('#custom-alert-close-button');
+                        if (defaultOkBtn) defaultOkBtn.remove(); // Ensure it's removed if present
+
+                        const confirmYesBtn = document.createElement('button');
+                        confirmYesBtn.classList.add('btn');
+                        confirmYesBtn.style.cssText = 'width:auto; background:#e74c3c;'; 
+                        confirmYesBtn.textContent = 'Yes, Kick';
+                        confirmYesBtn.onclick = async () => {
+                            await remove(child(ref(db, `rooms/${currentRoomId}/members`), memberId));
+                            showCustomAlert('Member Kicked', `${memberName} has been removed.`);
+                            // showCustomAlert now handles cleanup of its own buttons automatically
+                        };
+                        
+                        const confirmNoBtn = document.createElement('button');
+                        confirmNoBtn.classList.add('btn', 'btn-secondary');
+                        confirmNoBtn.style.cssText = 'width:auto;'; 
+                        confirmNoBtn.textContent = 'No, Cancel';
+                        confirmNoBtn.onclick = () => {
+                            customAlertModal.style.display = 'none';
+                            // showCustomAlert's button setup cleans up its own default OK button
+                        };
+                        
+                        if(alertButtonWrapper){ // Add custom buttons to the alert's button wrapper
+                            alertButtonWrapper.appendChild(confirmYesBtn);
+                            alertButtonWrapper.appendChild(confirmNoBtn);
+                        } else { // Fallback if wrapper wasn't found (shouldn't happen with current showCustomAlert)
+                            customAlertModal.querySelector('.modal-body').appendChild(confirmYesBtn);
+                            customAlertModal.querySelector('.modal-body').appendChild(confirmNoBtn);
+                        }
+                    });
+                    li.appendChild(kickBtn);
+                }
                 membersListUl.appendChild(li);
             }
             memberListCount.textContent = Object.keys(roomMembers).length;
@@ -864,12 +1076,13 @@
             const audioStateRef = ref(db, `rooms/${currentRoomId}/audioState`);
             const messagesRef = ref(db, `rooms/${currentRoomId}/messages`);
             const membersRef = ref(db, `rooms/${currentRoomId}/members`);
+            const roomCreatorRef = ref(db, `rooms/${currentRoomId}/creatorId`);
             
             const audioOff = onValue(audioStateRef, (snapshot) => {
                 if (!snapshot.exists()) { 
                     musicPlayerPopup.classList.remove('visible'); 
                     setTimeout(() => musicPlayerPopup.style.display = 'none', 300); 
-                    updatePlayerUIForNoMusic(); // Reset UI to no-music state
+                    updatePlayerUIForNoMusic(); 
                     return; 
                 }
                 
@@ -891,7 +1104,19 @@
                 }
             });
             
-            const messagesOff = onChildAdded(messagesRef, (s) => displayMessage(s.val(), s.val().senderId === userId ? 'sent' : 'received'));
+            const messagesOverallOff = onValue(messagesRef, (snapshot) => {
+                if (snapshot.exists() && Object.keys(snapshot.val()).length > 0) {
+                    e2eNotice.classList.add('hidden');
+                } else {
+                    e2eNotice.classList.remove('hidden');
+                }
+                messagesArea.innerHTML = ''; 
+                if (snapshot.exists()) {
+                    Object.values(snapshot.val()).sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0)).forEach(msg => {
+                        displayMessage(msg, msg.senderId === userId ? 'sent' : 'received');
+                    });
+                }
+            });
             
             const membersOverallOff = onValue(membersRef, (snapshot) => {
                 roomMembers = {}; 
@@ -904,25 +1129,47 @@
                 if (memberListModal.style.display === 'flex') {
                     memberCountWrapper.click(); 
                 }
+                if (!snapshot.child(userId).exists() && currentRoomId !== null && chatScreen.classList.contains('active')) { 
+                     console.log(`User ${userId} was removed from room ${currentRoomId}. Redirecting.`);
+                     showCustomAlert('Kicked Out', 'You have been kicked out of the room by the creator.');
+                     setTimeout(() => {
+                         executeLeaveAndDeletion(false); 
+                     }, 2000); 
+                }
             });
 
-            roomListeners.push(audioOff, messagesOff, membersOverallOff);
+            const creatorIdOff = onValue(roomCreatorRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    roomCreatorId = snapshot.val();
+                } else {
+                    roomCreatorId = null;
+                }
+            });
+
+
+            roomListeners.push(audioOff, messagesOverallOff, membersOverallOff, creatorIdOff);
         }
 
-        window.onYouTubeIframeAPIReady = () => player = new YT.Player('youtube-player-hidden', { events: { 'onReady': onPlayerReady }});
+        window.onYouTubeIframeAPIReady = () => player = new YT.Player('youtube-player-hidden', { 
+            events: { 
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange 
+            }
+        });
 
         function onPlayerReady() {
             isPlayerReady = true;
+            player.setVolume(currentVolume); 
+            volumeSlider.value = currentVolume; 
             if (Object.keys(lastKnownState).length > 0) { 
                 syncLocalPlayerToState(lastKnownState);
                 updatePlayerUI(lastKnownState); 
             } else {
-                updatePlayerUIForNoMusic(); // Set initial no-music state if no last state
+                updatePlayerUIForNoMusic(); 
             }
         }
 
         function updatePlayerUI(state) {
-            // Show album art image, hide icon
             albumArtImage.src = state.thumbnail;
             albumArtImage.style.display = 'block';
             albumArtIcon.style.display = 'none';
@@ -933,22 +1180,19 @@
             playPauseBtn.innerHTML = state.isPlaying ? '<i class="fas fa-pause-circle"></i>' : '<i class="fas fa-play-circle"></i>';
         }
 
-        // NEW: Function to reset player UI to no-music state
         function updatePlayerUIForNoMusic() {
             albumArtImage.style.display = 'none';
-            albumArtIcon.style.display = 'block'; // Show icon
+            albumArtIcon.style.display = 'block'; 
 
             songTitle.textContent = "No music selected";
             songArtist.textContent = "Use the search button to find music";
             
-            // Reset times and progress bar
             currentTimeDisplay.textContent = "00:00";
             totalDurationDisplay.textContent = "00:00";
             progressBar.value = 0;
             progressBar.max = 0;
-            playPauseBtn.innerHTML = '<i class="fas fa-play-circle"></i>'; // Default play icon
+            playPauseBtn.innerHTML = '<i class="fas fa-play-circle"></i>'; 
         }
-
 
         function syncLocalPlayerToState(state) {
             if (!isPlayerReady || !player) return;
@@ -967,6 +1211,22 @@
                 player.pauseVideo();
             }
         }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                if (isRepeatOn) {
+                    player.seekTo(0);
+                    player.playVideo();
+                    updateFirebaseAudioState({timestamp: 0, isPlaying: true});
+                } else {
+                    updateFirebaseAudioState({isPlaying: false, timestamp: 0});
+                }
+            }
+            if (!isSeeking && (event.data === YT.PlayerState.PLAYING || event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED)) {
+                updateFirebaseAudioState({}); 
+            }
+        }
+
 
         function updateFirebaseAudioState(newStateProperties) {
             if (!currentRoomId || !player) return; 
@@ -1045,6 +1305,38 @@
                 totalDurationDisplay.textContent = "00:00";
             }
         }, 500);
+
+        volumeSlider.addEventListener('input', () => {
+            currentVolume = parseInt(volumeSlider.value);
+            if (player) {
+                player.setVolume(currentVolume);
+                isMuted = false; 
+                muteButton.innerHTML = '<i class="fas fa-volume-up"></i>';
+            }
+        });
+
+        muteButton.addEventListener('click', () => {
+            if (!player) return;
+            if (isMuted) {
+                player.unMute();
+                player.setVolume(currentVolume); 
+                muteButton.innerHTML = '<i class="fas fa-volume-up"></i>';
+                volumeSlider.value = currentVolume;
+                isMuted = false;
+            } else {
+                player.mute();
+                muteButton.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                volumeSlider.value = 0;
+                isMuted = true;
+            }
+        });
+
+        repeatButton.addEventListener('click', () => {
+            isRepeatOn = !isRepeatOn;
+            repeatButton.classList.toggle('active', isRepeatOn); 
+            showCustomAlert('Repeat Mode', isRepeatOn ? 'Repeat is ON' : 'Repeat is OFF');
+        });
+
 
         // --- Search Modal & Song Selection ---
         musicSearchBtn.addEventListener('click', () => { searchModal.style.display = 'flex'; modalSearchInput.focus(); });
@@ -1159,6 +1451,56 @@
                 playerToggleViewButton.innerHTML = 'Vibana <i class="fas fa-minus"></i>'; 
             }
         }
+        // Emoji Picker Logic
+        const emojis = [
+            '😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙',
+            '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥',
+            '😌', '😔', '😪', '🤤', '😴', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '🥵', '🥶', '😵', '🤯', '🤠', '🥳', '😎', '🤓', '🧐',
+            '😕', '😟', '🙁', '😮', '😯', '😲', '😳', '🥺', '😦', '😧', '😨', '😩', '🤯', '😬', '😓', '😔', '😖', '😫', '😩', '😤',
+            '😠', '😡', '🤬', '😈', '👿', '💀', '👻', '👽', '🤖', '💩', '😺', '😸', '😹', '😻', '😼', '😽', '😾', '😿', '🙀', '👋',
+            '🤚', '🖐️', '✋', '🖖', '👌', '🤏', '✌️', '🤞', '🤟', '🤘', '🤙', '👈', '👉', '👆', '🖕', '👇', '☝️', '👍', '👎', '👏',
+            '👐', '🤲', '🤝', '🙏', '✍️', '💅', '🤳', '💪', '🦵', '🦶', '👂', '👃', '🧠', '🫀', '🫁', '🦷', '🦴', '👀', '👁️', '👅',
+            '👄', '💋', '🩸', '🦠', '🧑‍🎄', '🦸', '🦹', '🧙', '🧚', '🧛', '🧜', '🧝', '🧞', '🧟', '🧑‍🦱', '🧑‍🦰', '🧑‍🦳', '🧑‍🦲', '👶', '🧒',
+            '👦', '👧', '🧑', '👱', '👨', '🧔', '👩', '🧓', '👴', '👵', '🙍', '🙎', '🙅', '🙆', '💁', '🙋', '🧏', '🙇', '🧑‍🍼', '👮',
+            '🕵️', '👷', '👨‍🌾', '👩‍🍳', '👨‍🎓', '👩‍🎤', '👨‍🏫', '👩‍🏭', '👨‍💻', '👩‍💼', '👨‍🔧', '👩‍🔬', '👨‍🎨', '👩‍🚒', '👨‍✈️', '👩‍🚀', '👨‍⚖️', '👰', '🤵',
+            '👑', '👸', '🤴', '🥷', '🫂', '🗣️', '👤', '👥', '🫂', '👣', '🐵', '🐒', '🦍', '🦧', '🐶', '🐕', '🐩', '🐺', '🦊', '🦝',
+            '🐱', '🐈', '🦁', '🐯', '🐅', '🐆', '🐴', '🐎', '🦄', '🦓', '🦌', '🐮', '🐂', '🐃', '🐄', '🐷', '🐖', '🐗', '🐽', '🐏',
+            '🐑', '🐐', '🐪', '🐫', '🦙', '🦒', '🐘', '🦣', '🦏', '🦛', '🐭', '🐁', '🐀', '🐹', '🐰', '🐇', '🐿️', '🦫', '🦔', '🦇',
+            '🐻', '🐨', '🐼', '🦥', '🦦', '🦨', '🦘', '🦡', '🐾', '🦃', '🐔', '🐓', '🐣', '🐤', '🐥', '🐦', '🐧', '🕊️', '🦅', '🦆',
+            '🦢', '🦉', '🦩', '🦚', '🦜', '🐸', '🐊', '🐢', '🦎', '🐍', '🐲', '🐉', '🦕', '🦖', '🐳', '🐋', '🐬', '🦭', '🐟', '🐠',
+            '🐡', '🦈', '🐙', '🐚', '🦀', '🦐', '🦑', '🐌', '🦋', '🐛', '🐜', '🐝', '🐞', '🦗', '🪳', '🕷️', '🕸️', '🦂', ' Mosquito', '🪰',
+            '🪱', '💐', '🌸', '💮', '🏵️', '🌹', '🥀', '🌺', '🌻', '🌼', '🌷', '🌱', '🌲', '🌳', '🌴', '🌵', '🌾', '🌿', '☘️', '🍀',
+            '🍁', '🍂', '🍃', '🍄', '🌰', '🌎', '🌍', '🌏', '🌕', '🌖', '🌗', '🌘', '🌑', '🌒', '🌓', '🌔', '🌙', '🌚', '🌛', '🌜',
+            '⭐', '🌟', '💫', '✨', '⚡', '☄️', '💥', '🔥', '💧', '🌊', '🌈', '🌪️', '☁️', '☀️', '🌞', '☔', '☂️', '☃️', '⛄', '❄️',
+            '🌬️', '💨', 'fog', '🌀', '🌡️', '🎄', '🎁', '🎈', '🎉', '🎊', '🎀', '🪄', '💖', '💗', '❤️', '🧡', '💛', '💚', '💙', '💜',
+            '🤎', '🖤', '🤍', '💔', '❣️', '💕', '💞', '💓', '💔', '❤️‍🔥', '❤️‍🩹', '💯', '💢', '💥', '💫', '💦', '💨', '🕳️', '💣', '💬',
+            '👁️‍🗨️', '🗯️', '💭', '💤', '💮', '♨️', '💈', '🛑', '🔔', '🔕', '📣', '📢', 'スピーカー', '🔈', '🔉', '🔊', '🔋', '🔌', '💻', '🖥️',
+            '⌨️', '🖱️', '🖨️', '💾', '💿', '📀', '🧮', '📱', '📞', '☎️', 'PAGER', 'FAX', '📻', '🎙️', '🎚️', '🎛️', '🧭', '⏱️', '⏲️', '⏰',
+            '🕰️', '⌛', '⏳', '📡', '🔋', '🔌', '💡', '🔦', '🕯️', '🗑️', '🛢️', '🛒', '🛍️', '💰', '🪙', '💸', '💵', '💶', '💷', '💴', '💳',
+            '✉️', '📧', '📨', '📩', '📤', '📥', '📦', '📫', '📪', '📬', '📮', '🗳️', '✏️', '✒️', '🖊️', '🖍️', '🖌️', '📝', '💼', '📁',
+            '📂', '🗂️', '📅', '📆', '🗒️', '🗓️', '📖', '📚', '🔖', '🏷️', '📜', '📊', '📈', '📉', '📄', '📃', '📋', '🔗', '📎', '📌',
+            '📎', '📍', '📏', '📐', '✂️', '🗃️', '🗄️', '🗑️', '🔒', '🔓', '🔏', '🔐', '🔑', '🗝️', '🗡️', '🛡️', '⚙️', '🪛', '🔩', '🔨',
+            '⛏️', '🪓', '🔪', '🔫', '🪖', '🪜', '🧱', '⛓️', '🪝', '🧲', '🚪', '🪞', '🪟', '🛏️', '🛋️', '🪑', '🚽', '🚿', '🛁', '🪠',
+            '🧴', '🧼', '🧽', '🧹', '🧺', '🧻', '🚽', '🛎️', '🔑', '🗝️', '🚪', '🛗', '🪜', '🪞', '🪟', '🛏️', '🛋️',
+        ];
+
+        emojiButton.addEventListener('click', () => {
+            emojiGrid.innerHTML = ''; 
+            emojis.forEach(emoji => {
+                const emojiSpan = document.createElement('span');
+                emojiSpan.classList.add('emoji-item');
+                emojiSpan.textContent = emoji;
+                emojiSpan.addEventListener('click', () => {
+                    messageInput.value += emoji; 
+                    emojiModal.style.display = 'none'; 
+                    messageInput.focus(); 
+                });
+                emojiGrid.appendChild(emojiSpan);
+            });
+            emojiModal.style.display = 'flex';
+        });
+
+        emojiModalCloseButton.addEventListener('click', () => emojiModal.style.display = 'none');
 
     </script>
 </body>
